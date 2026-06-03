@@ -1,0 +1,135 @@
+/* 1. VARIABLES Y RESET*/
+:root {
+    --bg: rgb(255, 255, 255, 0.1);
+    --text: rgb(255, 255, 255);
+    --primary: rgb(37, 99, 235);
+    --primary-contrast: rgb(0, 0, 0);
+} 
+
+/* Fondo oscuro detrás del modal */
+.modal {
+    position: fixed;
+    inset: 0;
+
+    display: none;
+
+    justify-content: center;
+    align-items: center;
+
+    background: var(--bg);
+
+    z-index: 999;
+}
+
+.modal.active {
+    display: flex;
+}
+
+/* Caja del modal */
+.modal-dialog {
+    width: 100%;
+    max-width: 500px;
+}
+
+/* Contenido */
+.modal-content {
+    background: rgba(20,20,20,0.95);
+    color: white;
+
+    padding: 20px;
+
+    border-radius: 20px;
+
+    border: 2px solid var(--primary-contrast);
+
+    backdrop-filter: blur(10px);
+}
+
+/* Estilos para los inputs dentro del modal */
+.modal-content input {
+    width: 100%;
+
+    padding: 12px;
+
+    margin-bottom: 10px;
+
+    border-radius: 10px;
+
+    border: 1px solid rgba(255,255,255,0.2);
+
+    background: rgba(255,255,255,0.1);
+
+    color: white;
+}
+
+/* Estilos para el botón dentro del modal */
+.modal-content button {
+    width: 100%;
+
+    padding: 12px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: var(--primary);
+
+    color: white;
+
+    cursor: pointer;
+}
+
+/* Estilos para las pestañas de login/registro */
+#authTabs {
+    display: flex;
+    gap: 10px;
+
+    margin-bottom: 20px;
+
+    list-style: none;
+}
+
+/* OCULTAR PESTAÑAS */
+.tab-content {
+    display: none;
+}
+
+/* MOSTRAR LOGIN POR DEFECTO */
+#login {
+    display: block;
+}
+
+#loginForm button[type="submit"] {
+    margin-top: 10px;
+}
+
+#authTabs button {
+    flex: 1;
+
+    background: rgba(255,255,255,0.1);
+
+    border: none;
+
+    color: white;
+
+    padding: 10px;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+}
+
+#authTabs .active {
+    background: var(--primary);
+}
+
+/* Estilo para el mensaje del tab de login */
+.registro-link span{
+    color: #339af0;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.registro-link span:hover{
+    text-decoration: underline;
+}

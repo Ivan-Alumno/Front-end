@@ -1,0 +1,289 @@
+/* === 1. VARIABLES GLOBALES Y RESET === */
+    /* Definición de variables CSS para colores, bordes y sombras */
+    :root {
+        --bg: rgba(255, 255, 255, 0.08);                /* Fondo general translúcido */
+        --text: rgba(255, 255, 255);                   /* Color de texto principal */
+        --text-muted: rgba(255, 255, 255, 0.75);      /* Texto secundario */
+        --primary: rgba(37, 99, 235);                  /* Color primario para acentos */
+        --primary-dark: rgba(20, 60, 160);             /* Variante oscura azul */
+        --border: rgba(255, 255, 255, 0.18);          /* Bordes tipo glass */
+        --radius: 20px;                               /* Radio estándar para bordes redondeados */
+        --shadow: 0 10px 30px rgba(0,0,0,0.25);       /* Sombra estándar para cajas */
+    }
+
+    /* Reset básico para todos los elementos */
+    * {
+        margin: 0;                  /* Eliminar márgenes por defecto */
+        padding: 0;                 /* Eliminar rellenos por defecto */
+        box-sizing: border-box;     /* Incluir bordes y rellenos en el tamaño total */
+    }
+
+/*========================== */
+
+
+/* === 2. BODY === */
+    /* Estilos generales para el cuerpo del documento */
+    body {
+        font-family: 'Times New Roman', Times, serif;        /* Fuente serif elegante */
+        line-height: 1.5;                                    /* Espaciado entre líneas */
+        background-color: #0b0f1a;                           /* Fondo oscuro base */
+        color: var(--text);                                  /* Color de texto principal */
+        background-image: url("../Imagenes/Fondo.png");      /* Imagen de fondo para la página */
+        background-size: cover;                               /* Mejor cobertura */
+        background-position: center;                         /* Centrar la imagen de fondo */
+        background-repeat: no-repeat;                        /* Evitar que se repita */
+    }
+/*========================== */
+
+
+/* === 3. CABECERA === */
+    /* Estructura principal del header */
+    header {
+        max-width: 1000px;                          /* Ancho máximo para mantener el contenido centrado y legible */
+        margin: 50px auto;                          /* Centrar el header con márgenes automáticos */
+        padding: 10px 20px;                         /* Relleno interno */
+        display: flex;                              /* Flexbox */
+        justify-content: space-between;
+        align-items: center;
+        background: var(--bg);
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+        backdrop-filter: blur(12px);
+        box-shadow: var(--shadow);
+    }
+
+    /* Logo dentro del header */
+    .logo img {
+        max-width: 150px;
+        height: auto;
+    }
+
+    /* Navegación principal */
+    nav ul {
+        display: flex;
+        list-style: none;
+        gap: 20px;
+    }
+
+    /* Enlaces de navegación */
+    nav a {
+        text-decoration: none;
+        color: var(--text);
+        transition: color 0.2s;
+    }
+
+    /* Efecto hover en enlaces de navegación */
+    nav a:hover {
+        color: var(--primary);
+    }
+
+    /* Botón de login dentro de la navegación */
+    .login-btn {
+        background: transparent;
+        border: none;
+        color: rgb(31, 173, 217);
+        font: inherit;
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+
+    /* Hover del botón login */
+    .login-btn:hover {
+        color: var(--primary);
+    }
+
+    .user-container{
+        position: relative;
+    }
+
+    /* Menu especial oculto por defecto */
+    .user-menu {
+        position: absolute;
+        top: 40px;
+        right: 0;
+
+        background: rgba(10, 14, 25, 0.95);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+
+        padding: 10px;
+
+        display: none;
+        min-width: 140px;
+
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(10px);
+    }
+
+    /*Mostrar menu especial cuando este activo */
+    .user-menu.show {
+        display: block;
+    }
+
+    /*Boton del menu */
+    .user-menu button {
+        width: 100%;
+        padding: 8px;
+
+        background: rgb(220, 50, 50);
+        color: white;
+
+        border: none;
+        border-radius: 8px;
+
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .user-menu button:hover {
+        background: rgb(170, 30, 30);
+    }
+/*========================== */
+
+
+/* 4. MAIN */
+    main {
+        text-align: center;
+        max-width: 1000px;
+        margin: 20px auto;
+        padding: 20px;
+
+        background: var(--bg);
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+        backdrop-filter: blur(12px);
+    }
+
+    /* Contenido de las secciones */
+    section {
+        text-align: center;
+    }
+/*========================== */
+
+
+/* TITULO */
+    #hero {
+        margin-top: -30px;
+        margin-bottom: 40px;
+        padding: 20px;
+    }
+/*========================== */
+
+
+/* CONFIGURACIÓN DE LA SECCIÓN DE HERRAMIENTAS */
+    #herramientas {
+        margin-top: 40px;
+        margin-bottom: 30px;
+
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 50px;
+
+        padding: 20px;
+        background: var(--bg);
+
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+        backdrop-filter: blur(12px);
+    }
+
+    /* Cuarta tarjeta */
+    #herramientas a:nth-child(4) {
+        grid-column: 2 / 3;
+    }
+
+    /* Ajustes de las tarjetas internas */
+    .contenedor {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        background: rgba(37, 99, 235, 0.12);
+
+        border-radius: var(--radius);
+
+        box-shadow: var(--shadow);
+        padding: 20px;
+
+        text-decoration: none;
+        color: var(--text);
+        font-weight: bold;
+        transition: transform 0.2s, box-shadow 0.2s;
+        border: 1px solid var(--border);
+    }
+
+    /* Hover de las tarjetas */
+    .contenedor:hover {
+        transform: translateY(-8px) scale(1.05);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+    }
+
+    /* Texto dentro de las tarjetas */
+    .texto_contenedor {
+        font-size: 1rem;
+        color: var(--text);
+    }
+
+    /* Texto Hover dentro de las tarjetas */
+    .contenedor:hover .texto_contenedor {
+        color: rgb(233, 178, 68);
+    }
+
+    /* Icono dentro de las tarjetas */
+    .icono img {
+        width: 120px;
+        height: 120px;
+        object-fit: contain;
+    }
+/*========================== */
+
+
+/* SECCION BENEFICIOS PRINCIPALES */
+    /* Título de beneficios */
+    #beneficios h2 {
+        margin-bottom: 20px;
+    }
+
+    /* Configuración del contenedor de beneficios */
+    #beneficios ul {
+        display: flex;
+        justify-content: center;
+        align-items: stretch;
+        list-style: none;
+        gap: 100px;
+    }
+
+    /* Ajustes de cada beneficio */
+    #beneficios li {
+        text-align: center;
+        width: 100%;
+        background: var(--bg);
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+        backdrop-filter: blur(12px);
+
+        padding: 30px 10px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+/*========================== */
+
+
+/* 8. FOOTER (#contacto) */
+    footer {
+        max-width: 1000px;
+        margin: 50px auto;
+        padding: 20px;
+        text-align: center;
+
+        background: var(--bg);
+        backdrop-filter: blur(12px);
+
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+    }
+/*========================== */
