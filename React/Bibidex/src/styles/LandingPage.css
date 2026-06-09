@@ -1,0 +1,313 @@
+/* =========================
+   1. VARIABLES Y RESET
+========================= */
+
+:root {
+    --bg: rgba(255, 255, 255, 0.08);
+    --text: rgba(255, 255, 255);
+    --text-muted: rgba(255, 255, 255, 0.75);
+    --primary: rgba(37, 99, 235);
+    --primary-dark: rgba(20, 60, 160);
+    --primary-contrast: rgba(0, 0, 0);
+    --border: rgba(255, 255, 255, 0.18);
+    --radius: 20px;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* =========================
+   2. BODY
+========================= */
+
+body {
+    font-family: 'Times New Roman', Times, serif;
+    line-height: 1.5;
+
+    background-color: #0b0f1a;
+    background-image: url("../assets/Fondo.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    color: var(--text);
+}
+
+
+/* =========================
+   3. HEADER
+========================= */
+
+header {
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 10px 20px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+
+    backdrop-filter: blur(12px);
+    box-shadow: var(--shadow);
+}
+
+.logo img {
+    max-width: 150px;
+    height: auto;
+}
+
+nav ul {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    list-style: none;
+}
+
+nav a {
+    color: var(--text);
+    text-decoration: none;
+
+    transition: color 0.2s;
+}
+
+nav a:hover {
+    color: var(--primary);
+}
+
+
+/* =========================
+   4. LOGIN / USUARIO HEADER
+========================= */
+
+.login-btn {
+    background: transparent;
+    border: none;
+
+    color: rgb(31, 173, 217);
+    font: inherit;
+    text-decoration: none;
+
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.login-btn:hover {
+    color: var(--primary);
+}
+
+.user-container {
+    position: relative;
+}
+
+.usuario-menu {
+    position: relative;
+}
+
+.dropdown-usuario {
+    position: absolute;
+    top: 100%;
+    right: 0;
+
+    min-width: 140px;
+    margin-top: 10px;
+    padding: 10px;
+
+    background: rgba(10, 14, 25, 0.95);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(10px);
+
+    z-index: 1000;
+}
+
+.dropdown-usuario button {
+    width: 100%;
+    padding: 8px;
+
+    background: rgb(220, 50, 50);
+    color: white;
+
+    border: none;
+    border-radius: 8px;
+
+    cursor: pointer;
+    white-space: nowrap;
+
+    transition: background 0.2s;
+}
+
+.dropdown-usuario button:hover {
+    background: rgb(170, 30, 30);
+}
+
+
+/* =========================
+   5. MAIN
+========================= */
+
+main {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 20px;
+
+    text-align: center;
+
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+
+    backdrop-filter: blur(12px);
+}
+
+section {
+    text-align: center;
+}
+
+
+/* =========================
+   6. HERO
+========================= */
+
+#hero {
+    margin-top: -30px;
+    margin-bottom: 40px;
+    padding: 20px;
+}
+
+
+/* =========================
+   7. HERRAMIENTAS
+========================= */
+
+#herramientas {
+    margin-top: 40px;
+    margin-bottom: 30px;
+    padding: 20px;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 50px;
+
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+
+    backdrop-filter: blur(12px);
+}
+
+#herramientas .contenedor:nth-child(4) {
+    grid-column: 2 / 3;
+}
+
+.contenedor {
+    padding: 20px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background: rgba(37, 99, 235, 0.12);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+
+    color: var(--text);
+    font-weight: bold;
+    text-decoration: none;
+
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.contenedor:hover {
+    transform: translateY(-8px) scale(1.05);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+}
+
+.texto_contenedor {
+    font-size: 1rem;
+    color: var(--text);
+}
+
+.contenedor:hover .texto_contenedor {
+    color: rgb(233, 178, 68);
+}
+
+.icono img {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+}
+
+
+/* =========================
+   8. BENEFICIOS
+========================= */
+
+#beneficios h2 {
+    margin-bottom: 20px;
+}
+
+#beneficios ul {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 100px;
+
+    list-style: none;
+}
+
+#beneficios li {
+    width: 100%;
+    padding: 30px 10px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+
+    backdrop-filter: blur(12px);
+}
+
+
+/* =========================
+   9. FOOTER
+========================= */
+
+footer {
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 20px;
+
+    text-align: center;
+
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+
+    backdrop-filter: blur(12px);
+}
+
+footer .contacto-btn {
+    display: inline-block;
+    margin-top: 25px;
+}

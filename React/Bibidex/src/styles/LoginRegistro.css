@@ -1,0 +1,117 @@
+/* =========================
+   1. AUTH PAGE
+========================= */
+
+.auth-page {
+    min-height: 70vh;
+    padding: 40px 20px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* =========================
+   2. MODAL / CAJA AUTH
+========================= */
+
+.modal-dialog {
+    width: 100%;
+    max-width: 500px;
+}
+
+.modal-content {
+    padding: 20px;
+
+    background: rgba(20, 20, 20, 0.95);
+    color: white;
+
+    border: 2px solid var(--primary-contrast);
+    border-radius: 20px;
+
+    backdrop-filter: blur(10px);
+}
+
+.modal-body h1,
+.modal-body h2 {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+
+/* =========================
+   3. FORMULARIOS
+========================= */
+
+.modal-content label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.modal-content input,
+.modal-content textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 10px;
+
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.modal-content button {
+    width: 100%;
+    padding: 12px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: var(--primary);
+    color: white;
+
+    cursor: pointer;
+}
+
+#loginForm button[type="submit"],
+#registroForm button[type="submit"] {
+    margin-top: 10px;
+}
+
+
+/* =========================
+   4. MENSAJES Y LINKS
+========================= */
+
+#mensajeLogin,
+#mensajeRegistro {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.registro-link {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.registro-link a {
+    color: #339af0;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.registro-link a:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================
+   5. VALIDACIONES VISUALES
+========================= */
+
+.modal-content ul {
+    margin: 5px 0 15px 20px;
+    text-align: left;
+}

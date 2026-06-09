@@ -1,3 +1,4 @@
 Paso 1: cmd.exe
 Paso 2: npm create vite@latest [nombre] --template react
 Paso 3: Nombre del paquete, Framework: React, Variante: JS+React
+Paso 4: npm install react-router-dom
