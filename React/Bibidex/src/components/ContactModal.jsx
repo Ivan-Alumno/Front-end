@@ -20,9 +20,9 @@ export default function ContactModal() {
               <textarea id = "contactoMensaje" placeholder = "Escribe tu duda o sugerencia..."
                 rows = "6" required></textarea>
 
-              <button type="submit">Enviar</button>
+              <button type = "submit">Enviar</button>
 
-              <p id="mensajeContacto"></p>
+              <p id = "mensajeContacto"></p>
             </form>
           </div>
         </div>

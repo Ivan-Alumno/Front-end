@@ -47,7 +47,7 @@ export default function Contact() {
     }
 
     return (
-        <section id="contacto" className="contact-page">
+        <section id = "contacto" className = "contact-page">
             <h1>Contacto</h1>
 
             <p>
@@ -55,43 +55,39 @@ export default function Contact() {
                 y te responderemos pronto.
             </p>
 
-            <form id="contactoForm" onSubmit={handleContacto}>
-                <label htmlFor="contactoUsuario">Usuario</label>
+            <form id = "contactoForm" onSubmit = {handleContacto}>
 
+                <label htmlFor = "contactoUsuario">Usuario</label>
                 <input
-                    id="contactoUsuario"
-                    type="text"
-                    placeholder="Tu usuario"
-                    value={usuario}
+                    id = "contactoUsuario"
+                    type = "text"
+                    placeholder = "Tu usuario"
+                    value = {usuario}
                     readOnly
                 />
 
-                <label htmlFor="contactoCorreo">Correo electrónico</label>
-
+                <label htmlFor = "contactoCorreo">Correo electrónico</label>
                 <input
-                    id="contactoCorreo"
-                    type="email"
-                    placeholder="Tu correo"
-                    value={correo}
+                    id = "contactoCorreo"
+                    type = "email"
+                    placeholder = "Tu correo"
+                    value = {correo}
                     readOnly
                 />
 
-                <label htmlFor="contactoMensaje">Mensaje</label>
-
+                <label htmlFor = "contactoMensaje">Mensaje</label>
                 <textarea
-                    id="contactoMensaje"
-                    placeholder="Escribe tu duda o sugerencia..."
-                    rows="6"
-                    value={mensajeContacto}
-                    onChange={(event) => setMensajeContacto(event.target.value)}
+                    id = "contactoMensaje"
+                    placeholder = "Escribe tu duda o sugerencia..."
+                    rows = "6"
+                    value = {mensajeContacto}
+                    onChange = {(event)  => setMensajeContacto(event.target.value)}
                     required
                 ></textarea>
 
-                <button type="submit">
-                    Enviar
-                </button>
+                <button type = "submit">Enviar</button>
 
-                <p id="mensajeContacto">{mensaje}</p>
+                <p id = "mensajeContacto">{mensaje}</p>
             </form>
         </section>
     );

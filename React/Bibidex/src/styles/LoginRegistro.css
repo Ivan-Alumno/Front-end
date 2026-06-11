@@ -75,8 +75,8 @@
     cursor: pointer;
 }
 
-#loginForm button[type="submit"],
-#registroForm button[type="submit"] {
+#loginForm button[type = "submit"],
+#registroForm button[type = "submit"] {
     margin-top: 10px;
 }
 

@@ -99,7 +99,7 @@
     display: block;
 }
 
-#loginForm button[type="submit"] {
+#loginForm button[type = "submit"] {
     margin-top: 10px;
 }
 

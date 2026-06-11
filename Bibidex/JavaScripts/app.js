@@ -1,6 +1,6 @@
 "use strict";
 
-let usuarios =[];
+let usuarios = [];
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -740,7 +740,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // INICIO
     renderUsuario();
-  
   //
   
   // CARRUSEL
