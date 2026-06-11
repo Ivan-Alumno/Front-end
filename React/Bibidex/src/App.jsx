@@ -17,23 +17,23 @@ import "./styles/LoginRegistro.css";
 export default function App() {
     return (
         <BrowserRouter>
-            <ScrollToHash />
+            <ScrollToHash/>
             
-            <Header />
+            <Header/>
 
             <Routes>
 
-                <Route path = "/" element = {<Home />} />
+                <Route path = "/" element = {<Home/>}/>
 
-                <Route path = "/login" element = {<Login />} />
+                <Route path = "/login" element = {<Login/>}/>
 
-                <Route path = "/register" element = {<Register />} />
+                <Route path = "/register" element = {<Register/>}/>
 
-                <Route path = "/contact" element = {<Contact />} />
+                <Route path = "/contact" element = {<Contact/>}/>
 
             </Routes>
 
-            <Footer />
+            <Footer/>
 
         </BrowserRouter>
     );

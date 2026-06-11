@@ -5,6 +5,7 @@ import diapositiva2 from "../assets/Diapositiva_2.png";
 import diapositiva3 from "../assets/Diapositiva_3.png";
 
 export default function Carousel() {
+  
     const slides = [
       {
         imagen: diapositiva1,

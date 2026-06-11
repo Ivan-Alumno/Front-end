@@ -4,13 +4,14 @@ import Tools from "../components/Tools";
 import Benefits from "../components/Benefits";
 
 export default function Home() {
+
     return (
         <div>
             <main>
-                <Hero />
-                <Carousel />
-                <Tools />
-                <Benefits />
+                <Hero/>
+                <Carousel/>
+                <Tools/>
+                <Benefits/>
             </main>
         </div>
     );

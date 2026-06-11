@@ -2,11 +2,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function validarCorreo(correo) {
+
     const correoRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$/;
     return correoRegex.test(correo);
 }
 
 export default function Contact() {
+    
     const navigate = useNavigate();
 
     const usuarioGuardado = localStorage.getItem("usuarioLogueado") || "";

@@ -34,7 +34,7 @@ export default function Header() {
     return (
         <header>
 
-            <div className = "logo"><img src = {logo} alt = "Logo de la wiki" /></div>
+            <div className = "logo"><img src = {logo} alt = "Logo de la wiki"/></div>
 
             <nav>
 

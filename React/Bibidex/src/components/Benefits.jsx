@@ -1,5 +1,7 @@
+
 export default function Benefits() {
     return (
+        
         <section id = "beneficios">
 
             <h2>Beneficios Principales</h2>

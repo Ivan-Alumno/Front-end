@@ -2,11 +2,13 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 function validarCorreo(correo) {
+
     const correoRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$/;
     return correoRegex.test(correo);
 }
 
 export default function Register() {
+
     const navigate = useNavigate();
 
     const [username, setUsername] = useState("");
@@ -17,10 +19,7 @@ export default function Register() {
     const [mostrarValidacionContraseña, setMostrarValidacionContraseña] = useState(false);
 
     const usernameLimpio = username.trim();
-
-    const usernameCapitalizado =
-    usernameLimpio.charAt(0).toUpperCase() +
-    usernameLimpio.slice(1);
+    const usernameCapitalizado = usernameLimpio.charAt(0).toUpperCase() + usernameLimpio.slice(1);
 
     const correoLimpio = correo.trim();
 
@@ -37,18 +36,11 @@ export default function Register() {
         largo: contraseña.length >= 8
     };
 
-    const usernameValido =
-        usernameValidaciones.primerCaracter &&
-        usernameValidaciones.largo &&
-        usernameValidaciones.caracteres;
-
-    const contraseñaValida =
-        contraseñaValidaciones.mayuscula &&
-        contraseñaValidaciones.numero &&
-        contraseñaValidaciones.especial &&
-        contraseñaValidaciones.largo;
+    const usernameValido = usernameValidaciones.primerCaracter && usernameValidaciones.largo && usernameValidaciones.caracteres;
+    const contraseñaValida = contraseñaValidaciones.mayuscula && contraseñaValidaciones.numero && contraseñaValidaciones.especial && contraseñaValidaciones.largo;
 
     function handleRegistro(event) {
+
         event.preventDefault();
 
         if (!usernameValido) {
@@ -96,6 +88,7 @@ export default function Register() {
     }
 
     return (
+
         <section className = "auth-page">
             <div className = "modal-dialog">
                 <div className = "modal-content">
@@ -105,10 +98,7 @@ export default function Register() {
 
                         <form id = "registroForm" onSubmit = {handleRegistro} autoComplete = "off">
 
-                            <label htmlFor = "registroNombre">
-                                Nombre de usuario:
-                            </label>
-
+                            <label htmlFor = "registroNombre">Nombre de usuario:</label>
                             <input
                                 id = "registroNombre"
                                 type = "text"
@@ -130,10 +120,7 @@ export default function Register() {
                                 </ul>
                             )}
 
-                            <label htmlFor = "registroCorreo">
-                                Correo electrónico:
-                            </label>
-
+                            <label htmlFor = "registroCorreo">Correo electrónico:</label>
                             <input
                                 id = "registroCorreo"
                                 type = "email"
@@ -145,10 +132,7 @@ export default function Register() {
                                 required
                             />
 
-                            <label htmlFor = "registroContraseña">
-                                Contraseña:
-                            </label>
-
+                            <label htmlFor = "registroContraseña">Contraseña:</label>
                             <input
                                 id = "registroContraseña"
                                 type = "password"
@@ -171,16 +155,11 @@ export default function Register() {
                                 </ul>
                             )}
 
-                            <button type = "submit">
-                                Registrarse
-                            </button>
+                            <button type = "submit">Registrarse</button>
 
                             <p id = "mensajeRegistro">{mensaje}</p>
 
-                            <p className = "registro-link">
-                                ¿Ya tienes cuenta?
-                                <Link to = "/login"> Inicia sesión aquí</Link>
-                            </p>
+                            <p className = "registro-link">¿Ya tienes cuenta?<Link to = "/login"> Inicia sesión aquí</Link></p>
 
                         </form>
 
