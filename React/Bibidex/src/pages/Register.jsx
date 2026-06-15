@@ -90,7 +90,7 @@ function obtenerMensajeErrorRegistro(datosRegistro) {
     return "";
 }
 
-function IndicadorValidacion({ cumplida }) {
+function renderIndicadorValidacion(cumplida) {
     return (
         <span className = {cumplida ? "validacion-ok" : "validacion-error"}>
             {cumplida ? "OK" : "X"}
@@ -98,12 +98,12 @@ function IndicadorValidacion({ cumplida }) {
     );
 }
 
-function ListaValidaciones({ validaciones }) {
+function renderListaValidaciones(validaciones) {
     return (
         <ul>
             {validaciones.map((validacion) => (
                 <li key = {validacion.texto}>
-                    <IndicadorValidacion cumplida = {validacion.cumplida}/> {validacion.texto}
+                    {renderIndicadorValidacion(validacion.cumplida)} {validacion.texto}
                 </li>
             ))}
         </ul>
@@ -185,7 +185,7 @@ export default function Register() {
                             />
 
                             {mostrarValidacionUsuario && (
-                                <ListaValidaciones validaciones = {usernameValidaciones}/>
+                                renderListaValidaciones(usernameValidaciones)
                             )}
 
                             <label htmlFor = "registroCorreo">Correo electronico:</label>
@@ -239,7 +239,7 @@ export default function Register() {
                                 />
                             </div>
 
-                            {mostrarValidacionContrasena && (<ListaValidaciones validaciones = {contrasenaValidaciones}/>)}
+                            {mostrarValidacionContrasena && renderListaValidaciones(contrasenaValidaciones)}
 
                             <button type = "submit">Registrarse</button>
 
