@@ -7,6 +7,8 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Contact from "./pages/Contact";
+import Administration from "./pages/Administration";
+import AdministrationUsers from "./pages/AdministrationUsers";
 import ScrollToHash from "./components/ScrollToHash";
 
 import "./styles/Carrusel.css";
@@ -22,15 +24,12 @@ export default function App() {
             <Header/>
 
             <Routes>
-
                 <Route path = "/" element = {<Home/>}/>
-
                 <Route path = "/login" element = {<Login/>}/>
-
                 <Route path = "/register" element = {<Register/>}/>
-
-                <Route path = "/contact" element = {<Contact/>}/>
-
+                <Route path = "/contactar" element = {<Contact/>}/>
+                <Route path = "/administracion" element = {<Administration/>}/>
+                <Route path = "/administracion/usuarios" element = {<AdministrationUsers/>}/>
             </Routes>
 
             <Footer/>

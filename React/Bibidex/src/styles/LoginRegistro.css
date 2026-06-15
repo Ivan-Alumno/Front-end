@@ -46,7 +46,7 @@
 
 .modal-content label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 15px;
 }
 
 .modal-content input,
@@ -60,6 +60,14 @@
 
     background: rgba(255, 255, 255, 0.1);
     color: white;
+}
+
+.campo-contrasena {
+    position: relative;
+}
+
+.campo-contrasena input {
+    padding-right: 52px;
 }
 
 .modal-content button {
@@ -78,6 +86,33 @@
 #loginForm button[type = "submit"],
 #registroForm button[type = "submit"] {
     margin-top: 10px;
+}
+
+.modal-content .mostrar-contrasena-btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+
+    width: 35px;
+    height: 35px;
+    padding: 0;
+    margin: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+
+    color: white;
+    font-size: 1.1rem;
+    line-height: 1;
+}
+
+.modal-content .mostrar-contrasena-btn:hover {
+    background: rgba(37, 99, 235, 0.75);
 }
 
 
@@ -114,4 +149,14 @@
 .modal-content ul {
     margin: 5px 0 15px 20px;
     text-align: left;
+}
+
+.validacion-ok {
+    color: #51cf66;
+    font-weight: bold;
+}
+
+.validacion-error {
+    color: #ff6b6b;
+    font-weight: bold;
 }

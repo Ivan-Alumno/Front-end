@@ -212,6 +212,10 @@ section {
     grid-column: 2 / 3;
 }
 
+#herramientas .contenedor:nth-child(5) {
+    grid-column: 3 / 3;
+}
+
 .contenedor {
     padding: 20px;
 
@@ -226,9 +230,11 @@ section {
     box-shadow: var(--shadow);
 
     color: var(--text);
+    font: inherit;
     font-weight: bold;
     text-decoration: none;
 
+    cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
@@ -290,7 +296,166 @@ section {
 
 
 /* =========================
-   9. FOOTER
+   9. ADMINISTRACION
+========================= */
+
+.administracion-page {
+    min-height: 360px;
+}
+
+.administracion-panel h1 {
+    margin-bottom: 30px;
+}
+
+.administracion-opciones {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 25px;
+}
+
+.administracion-opcion {
+    min-height: 150px;
+    padding: 25px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+
+    background: rgba(37, 99, 235, 0.12);
+    color: var(--text);
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+
+    font: inherit;
+    text-align: center;
+    text-decoration: none;
+
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.administracion-opcion:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+}
+
+.administracion-opcion span {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: rgb(233, 178, 68);
+}
+
+.administracion-opcion small {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+.usuarios-admin-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.usuarios-admin-buscador {
+    width: min(100%, 360px);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.usuarios-admin-buscador label {
+    font-weight: bold;
+}
+
+.usuarios-admin-buscador input {
+    width: 100%;
+    padding: 12px;
+
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text);
+
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.usuarios-admin-lista {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.usuario-admin-card {
+    position: relative;
+    padding: 20px;
+    padding-bottom: 72px;
+
+    background: rgba(37, 99, 235, 0.12);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+
+    text-align: left;
+}
+
+.usuario-admin-card h2 {
+    margin-bottom: 12px;
+    color: rgb(233, 178, 68);
+}
+
+.usuario-admin-card p {
+    margin-bottom: 8px;
+}
+
+.usuario-admin-card button {
+    margin-top: 10px;
+    padding: 10px 14px;
+
+    background: var(--primary);
+    color: white;
+
+    border: none;
+    border-radius: 10px;
+
+    cursor: pointer;
+}
+
+.usuario-admin-card .eliminar-usuario-btn {
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    margin: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: rgba(220, 38, 38, 0.12);
+    color: #ff6b6b;
+
+    border: 1px solid rgba(255, 107, 107, 0.75);
+    border-radius: 10px;
+}
+
+.usuario-admin-card .eliminar-usuario-btn:hover {
+    background: rgba(220, 38, 38, 0.3);
+}
+
+.usuarios-admin-vacio {
+    grid-column: 1 / -1;
+    color: var(--text-muted);
+}
+
+
+/* =========================
+   10. FOOTER
 ========================= */
 
 footer {

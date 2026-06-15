@@ -1,12 +1,17 @@
 import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 
+function obtenerContrasena(usuario) {
+    return usuario.contrasena || usuario["contrase\u00f1a"] || "";
+}
+
 export default function Login() {
-    
     const navigate = useNavigate();
 
     const [correo, setCorreo] = useState("");
-    const [contraseña, setContraseña] = useState("");
+    const [contrasena, setContrasena] = useState("");
+    const [mostrarContrasena, setMostrarContrasena] = useState(false);
     const [mensaje, setMensaje] = useState("");
 
     function handleLogin(event) {
@@ -14,28 +19,22 @@ export default function Login() {
 
         const usuariosGuardados =
             JSON.parse(localStorage.getItem("usuarios")) || [];
-
         const correoLimpio = correo.trim();
 
         const usuarioEncontrado = usuariosGuardados.find((usuario) => {
-    console.log("Comparando con:", usuario);
-    console.log("Correo coincide:", usuario.correo === correoLimpio);
-    console.log("Contraseña coincide:", usuario.contraseña === contraseña);
-
-    return (
-        usuario.correo === correoLimpio &&
-        usuario.contraseña === contraseña
-    );
-});
+            return (
+                usuario.correo === correoLimpio &&
+                obtenerContrasena(usuario) === contrasena
+            );
+        });
 
         if (!usuarioEncontrado) {
-            setMensaje("Usuario o contraseña incorrectos.");
+            setMensaje("Usuario o contrasena incorrectos.");
             return;
         }
 
         localStorage.setItem("usuarioLogueado", usuarioEncontrado.username);
         localStorage.setItem("correoLogueado", usuarioEncontrado.correo);
-        
         globalThis.dispatchEvent(new Event("usuarioActualizado"));
 
         setMensaje("Ingreso exitoso.");
@@ -50,43 +49,52 @@ export default function Login() {
             <div className = "modal-dialog">
                 <div className = "modal-content">
                     <div className = "modal-body">
-
-                        <h1>Iniciar sesión</h1>
+                        <h1>Iniciar sesion</h1>
 
                         <form id = "loginForm" onSubmit = {handleLogin}>
-
                             <label htmlFor = "loginCorreo">
-                                Correo electrónico:
+                                Correo electronico:
                             </label>
 
                             <input
                                 id = "loginCorreo"
                                 type = "email"
                                 name = "login correo"
-                                placeholder = "Correo electrónico"
+                                placeholder = "Correo electronico"
                                 value = {correo}
                                 onChange = {(event) => setCorreo(event.target.value)}
                                 required
                             />
 
-                            <label htmlFor = "loginContraseña">
-                                Contraseña:
+                            <label htmlFor = "loginContrasena">
+                                Contrasena:
                             </label>
 
-                            <input
-                                id = "loginContraseña"
-                                type = "password"
-                                name = "login contraseña"
-                                autoComplete = "off"
-                                placeholder = "Contraseña"
-                                value = {contraseña}
-                                onChange = {(event) => setContraseña(event.target.value)}
-                                required
-                            />
+                            <div className = "campo-contrasena">
+                                <input
+                                    id = "loginContrasena"
+                                    type = {mostrarContrasena ? "text" : "password"}
+                                    name = "login contrasena"
+                                    autoComplete = "off"
+                                    placeholder = "Contrasena"
+                                    value = {contrasena}
+                                    onChange = {(event) => setContrasena(event.target.value)}
+                                    required
+                                />
+
+                                <button
+                                    className = "mostrar-contrasena-btn"
+                                    type = "button"
+                                    aria-label = {mostrarContrasena ? "Ocultar contrasena" : "Mostrar contrasena"}
+                                    onClick = {() => setMostrarContrasena(!mostrarContrasena)}
+                                >
+                                    {mostrarContrasena ? <EyeOff size = {20}/> : <Eye size = {20}/>}
+                                </button>
+                            </div>
 
                             <p className = "registro-link">
-                                ¿No tienes cuenta?
-                                <Link to = "/register"> Regístrate aquí</Link>
+                                No tienes cuenta?
+                                <Link to = "/register"> Registrate aqui</Link>
                             </p>
 
                             <button type = "submit">
@@ -94,9 +102,7 @@ export default function Login() {
                             </button>
 
                             <p id = "mensajeLogin">{mensaje}</p>
-
                         </form>
-
                     </div>
                 </div>
             </div>

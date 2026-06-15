@@ -41,7 +41,8 @@ export default function Header() {
                 <ul>
                     <li><Link to = "/">Inicio</Link></li>
                     <li><Link to = "/#beneficios">Beneficios</Link></li>
-                    <li><Link to = "/contacto">Contacto</Link></li>
+                    <li><Link to = "/#contacto">Contacto</Link></li>
+                    <li><Link to = "/administracion">Administración</Link></li>
                     
                     <li className = "user-container">
                       {usuarioLogueado ? (<div className = "usuario-menu"><button className = "login-btn" type = "button"

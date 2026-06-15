@@ -13,9 +13,7 @@ export default function Footer() {
                 <p>Dirección: Calle falsa 123, Ciudad, País</p>
             </address>
 
-            <Link className = "contacto-btn" to = "/contact">
-                ¿Tienes dudas? Contactanos.
-            </Link>
+            <Link className = "contacto-btn" to = "/contactar">¿Tienes dudas? Contactanos.</Link>
 
         </footer>
     );

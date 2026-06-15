@@ -1,85 +1,160 @@
 import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 
 function validarCorreo(correo) {
-
     const correoRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$/;
     return correoRegex.test(correo);
 }
 
-export default function Register() {
+function obtenerValidacionesUsuario(username) {
+    return [
+        {
+            cumplida: /^[A-Za-z]/.test(username),
+            texto: "Debe comenzar con una letra"
+        },
+        {
+            cumplida: username.length >= 3 && username.length <= 20,
+            texto: "Debe tener entre 3 y 20 caracteres"
+        },
+        {
+            cumplida: /^[A-Za-z][A-Za-z0-9._]*$/.test(username),
+            texto: "Solo letras, numeros, punto o guion bajo"
+        }
+    ];
+}
 
+function obtenerValidacionesContrasena(contrasena) {
+    return [
+        {
+            cumplida: /[A-Z]/.test(contrasena),
+            texto: "Debe incluir una mayuscula"
+        },
+        {
+            cumplida: /\d/.test(contrasena),
+            texto: "Debe incluir un numero"
+        },
+        {
+            cumplida: /[\W_]/.test(contrasena),
+            texto: "Debe incluir un caracter especial"
+        },
+        {
+            cumplida: contrasena.length >= 8,
+            texto: "Minimo 8 caracteres"
+        }
+    ];
+}
+
+function todasCumplidas(validaciones) {
+    return validaciones.every((validacion) => validacion.cumplida);
+}
+
+function capitalizarUsername(username) {
+    return username.charAt(0).toUpperCase() + username.slice(1);
+}
+
+function obtenerUsuariosGuardados() {
+    return JSON.parse(localStorage.getItem("usuarios")) || [];
+}
+
+function obtenerMensajeErrorRegistro(datosRegistro) {
+    const {
+        usernameValido,
+        correoLimpio,
+        contrasenaValida,
+        contrasena,
+        repetirContrasena,
+        usuariosGuardados
+    } = datosRegistro;
+
+    if (!usernameValido) {
+        return "El nombre de usuario no cumple los requisitos.";
+    }
+
+    if (!validarCorreo(correoLimpio)) {
+        return "Ingrese un correo valido.";
+    }
+
+    if (!contrasenaValida) {
+        return "La contrasena no cumple los requisitos.";
+    }
+
+    if (contrasena !== repetirContrasena) {
+        return "Las contrasenas no coinciden.";
+    }
+
+    if (usuariosGuardados.some((usuario) => usuario.correo === correoLimpio)) {
+        return "Ese correo ya esta registrado.";
+    }
+
+    return "";
+}
+
+function IndicadorValidacion({ cumplida }) {
+    return (
+        <span className = {cumplida ? "validacion-ok" : "validacion-error"}>
+            {cumplida ? "OK" : "X"}
+        </span>
+    );
+}
+
+function ListaValidaciones({ validaciones }) {
+    return (
+        <ul>
+            {validaciones.map((validacion) => (
+                <li key = {validacion.texto}>
+                    <IndicadorValidacion cumplida = {validacion.cumplida}/> {validacion.texto}
+                </li>
+            ))}
+        </ul>
+    );
+}
+
+export default function Register() {
     const navigate = useNavigate();
 
     const [username, setUsername] = useState("");
     const [correo, setCorreo] = useState("");
-    const [contraseña, setContraseña] = useState("");
+    const [contrasena, setContrasena] = useState("");
+    const [repetirContrasena, setRepetirContrasena] = useState("");
+    const [mostrarContrasena, setMostrarContrasena] = useState(false);
     const [mensaje, setMensaje] = useState("");
     const [mostrarValidacionUsuario, setMostrarValidacionUsuario] = useState(false);
-    const [mostrarValidacionContraseña, setMostrarValidacionContraseña] = useState(false);
+    const [mostrarValidacionContrasena, setMostrarValidacionContrasena] = useState(false);
 
     const usernameLimpio = username.trim();
-    const usernameCapitalizado = usernameLimpio.charAt(0).toUpperCase() + usernameLimpio.slice(1);
-
     const correoLimpio = correo.trim();
-
-    const usernameValidaciones = {
-        primerCaracter: /^[A-Za-z]/.test(usernameLimpio),
-        largo: usernameLimpio.length >= 3 && usernameLimpio.length <= 20,
-        caracteres: /^[A-Za-z][A-Za-z0-9._]*$/.test(usernameLimpio)
-    };
-
-    const contraseñaValidaciones = {
-        mayuscula: /[A-Z]/.test(contraseña),
-        numero: /\d/.test(contraseña),
-        especial: /[\W_]/.test(contraseña),
-        largo: contraseña.length >= 8
-    };
-
-    const usernameValido = usernameValidaciones.primerCaracter && usernameValidaciones.largo && usernameValidaciones.caracteres;
-    const contraseñaValida = contraseñaValidaciones.mayuscula && contraseñaValidaciones.numero && contraseñaValidaciones.especial && contraseñaValidaciones.largo;
+    const usernameValidaciones = obtenerValidacionesUsuario(usernameLimpio);
+    const contrasenaValidaciones = obtenerValidacionesContrasena(contrasena);
+    const usernameValido = todasCumplidas(usernameValidaciones);
+    const contrasenaValida = todasCumplidas(contrasenaValidaciones);
 
     function handleRegistro(event) {
-
         event.preventDefault();
 
-        if (!usernameValido) {
-            setMensaje("El nombre de usuario no cumple los requisitos.");
+        const usuariosGuardados = obtenerUsuariosGuardados();
+        const mensajeError = obtenerMensajeErrorRegistro({
+            usernameValido,
+            correoLimpio,
+            contrasenaValida,
+            contrasena,
+            repetirContrasena,
+            usuariosGuardados
+        });
+
+        if (mensajeError) {
+            setMensaje(mensajeError);
             return;
         }
 
-        if (!validarCorreo(correoLimpio)) {
-            setMensaje("Ingrese un correo válido.");
-            return;
-        }
-
-        if (!contraseñaValida) {
-            setMensaje("La contraseña no cumple los requisitos.");
-            return;
-        }
-
-        const usuariosGuardados =
-            JSON.parse(localStorage.getItem("usuarios")) || [];
-
-        const correoExistente = usuariosGuardados.some(
-            (usuario) => usuario.correo === correoLimpio
-        );
-
-        if (correoExistente) {
-            setMensaje("Ese correo ya está registrado.");
-            return;
-        }
-
-        const nuevoUsuario = {
-            username: usernameCapitalizado,
+        usuariosGuardados.push({
+            username: capitalizarUsername(usernameLimpio),
             correo: correoLimpio,
-            contraseña: contraseña
-        };
-
-        usuariosGuardados.push(nuevoUsuario);
+            contrasena: contrasena,
+            ["contrase\u00f1a"]: contrasena
+        });
 
         localStorage.setItem("usuarios", JSON.stringify(usuariosGuardados));
-
         setMensaje("Registro exitoso.");
 
         setTimeout(() => {
@@ -88,16 +163,13 @@ export default function Register() {
     }
 
     return (
-
         <section className = "auth-page">
             <div className = "modal-dialog">
                 <div className = "modal-content">
                     <div className = "modal-body">
-
                         <h1>Registro</h1>
 
                         <form id = "registroForm" onSubmit = {handleRegistro} autoComplete = "off">
-
                             <label htmlFor = "registroNombre">Nombre de usuario:</label>
                             <input
                                 id = "registroNombre"
@@ -113,14 +185,10 @@ export default function Register() {
                             />
 
                             {mostrarValidacionUsuario && (
-                                <ul>
-                                    <li>{usernameValidaciones.primerCaracter ? "✅" : "❌"} Debe comenzar con una letra</li>
-                                    <li>{usernameValidaciones.largo ? "✅" : "❌"} Debe tener entre 3 y 20 caracteres</li>
-                                    <li>{usernameValidaciones.caracteres ? "✅" : "❌"} Solo letras, números, punto o guion bajo</li>
-                                </ul>
+                                <ListaValidaciones validaciones = {usernameValidaciones}/>
                             )}
 
-                            <label htmlFor = "registroCorreo">Correo electrónico:</label>
+                            <label htmlFor = "registroCorreo">Correo electronico:</label>
                             <input
                                 id = "registroCorreo"
                                 type = "email"
@@ -132,37 +200,53 @@ export default function Register() {
                                 required
                             />
 
-                            <label htmlFor = "registroContraseña">Contraseña:</label>
-                            <input
-                                id = "registroContraseña"
-                                type = "password"
-                                name = "nueva Contraseña"
-                                autoComplete = "new-password"
-                                placeholder = "Contraseña"
-                                value = {contraseña}
-                                onChange = {(event) => setContraseña(event.target.value)}
-                                onFocus = {() => setMostrarValidacionContraseña(true)}
-                                onBlur = {() => setMostrarValidacionContraseña(false)}
-                                required
-                            />
+                            <label htmlFor = "registroContrasena">Contrasena:</label>
+                            <div className = "campo-contrasena">
+                                <input
+                                    id = "registroContrasena"
+                                    type = {mostrarContrasena ? "text" : "password"}
+                                    name = "nueva Contrasena"
+                                    autoComplete = "new-password"
+                                    placeholder = "Contrasena"
+                                    value = {contrasena}
+                                    onChange = {(event) => setContrasena(event.target.value)}
+                                    onFocus = {() => setMostrarValidacionContrasena(true)}
+                                    onBlur = {() => setMostrarValidacionContrasena(false)}
+                                    required
+                                />
 
-                            {mostrarValidacionContraseña && (
-                                <ul>
-                                    <li>{contraseñaValidaciones.mayuscula ? "✅" : "❌"} Debe incluir una mayúscula</li>
-                                    <li>{contraseñaValidaciones.numero ? "✅" : "❌"} Debe incluir un número</li>
-                                    <li>{contraseñaValidaciones.especial ? "✅" : "❌"} Debe incluir un carácter especial</li>
-                                    <li>{contraseñaValidaciones.largo ? "✅" : "❌"} Mínimo 8 caracteres</li>
-                                </ul>
-                            )}
+                                <button
+                                    className = "mostrar-contrasena-btn"
+                                    type = "button"
+                                    aria-label = {mostrarContrasena ? "Ocultar contrasena" : "Mostrar contrasena"}
+                                    onClick = {() => setMostrarContrasena(!mostrarContrasena)}
+                                >
+                                    {mostrarContrasena ? <EyeOff size = {20}/> : <Eye size = {20}/>}
+                                </button>
+                            </div>
+
+                            <label htmlFor = "registroRepetirContrasena">Repetir contrasena:</label>
+                            <div className = "campo-contrasena">
+                                <input
+                                    id = "registroRepetirContrasena"
+                                    type = {mostrarContrasena ? "text" : "password"}
+                                    name = "repetir Contrasena"
+                                    autoComplete = "new-password"
+                                    placeholder = "Repetir contrasena"
+                                    value = {repetirContrasena}
+                                    onChange = {(event) => setRepetirContrasena(event.target.value)}
+                                    required
+                                />
+                            </div>
+
+                            {mostrarValidacionContrasena && (<ListaValidaciones validaciones = {contrasenaValidaciones}/>)}
 
                             <button type = "submit">Registrarse</button>
 
                             <p id = "mensajeRegistro">{mensaje}</p>
 
-                            <p className = "registro-link">¿Ya tienes cuenta?<Link to = "/login"> Inicia sesión aquí</Link></p>
-
+                            <p className = "registro-link">Ya tienes cuenta?<Link to = "/login"> Inicia sesion aqui</Link></p>
                         </form>
-
                     </div>
                 </div>
             </div>
