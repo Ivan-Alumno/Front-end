@@ -1,0 +1,601 @@
+/* =========================
+   1. VARIABLES Y RESET
+========================= */
+
+:root {
+    --bg: rgba(255, 255, 255, 0.08);
+    --text: rgba(255, 255, 255);
+    --text-muted: rgba(255, 255, 255, 0.75);
+    --primary: rgba(37, 99, 235);
+    --primary-dark: rgba(20, 60, 160);
+    --primary-contrast: rgba(0, 0, 0);
+    --border: rgba(255, 255, 255, 0.18);
+    --radius: 20px;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* =========================
+   2. BODY
+========================= */
+
+body {
+    font-family: 'Times New Roman', Times, serif;
+    line-height: 1.5;
+
+    background-color: #0b0f1a;
+    background-image: url("../assets/Fondo.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    color: var(--text);
+}
+
+
+/* =========================
+   3. HEADER
+========================= */
+
+header {
+    position: relative;
+    z-index: 10000;
+
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 10px 20px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+
+    backdrop-filter: blur(12px);
+    box-shadow: var(--shadow);
+}
+
+.logo img {
+    max-width: 150px;
+    height: auto;
+}
+
+nav ul {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    list-style: none;
+}
+
+nav a {
+    color: var(--text);
+    text-decoration: none;
+
+    transition: color 0.2s;
+}
+
+nav a:hover {
+    color: var(--primary);
+}
+
+
+/* =========================
+   4. LOGIN / USUARIO HEADER
+========================= */
+
+.login-btn {
+    background: transparent;
+    border: none;
+
+    color: rgb(31, 173, 217);
+    font: inherit;
+    text-decoration: none;
+
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.login-btn:hover {
+    color: var(--primary);
+}
+
+.user-container {
+    position: relative;
+}
+
+.usuario-menu {
+    position: relative;
+}
+
+.dropdown-usuario {
+    position: absolute;
+    top: 100%;
+    right: 0;
+
+    min-width: 140px;
+    margin-top: 10px;
+    padding: 10px;
+
+    background: rgba(10, 14, 25, 0.95);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(10px);
+
+    z-index: 1000;
+}
+
+.dropdown-usuario button {
+    width: 100%;
+    padding: 8px;
+
+    background: rgb(220, 50, 50);
+    color: white;
+
+    border: none;
+    border-radius: 8px;
+
+    cursor: pointer;
+    white-space: nowrap;
+
+    transition: background 0.2s;
+}
+
+.dropdown-usuario button:hover {
+    background: rgb(170, 30, 30);
+}
+
+.accesibilidad-container {
+    position: relative;
+}
+
+.accesibilidad-btn {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(233, 178, 68, 0.18);
+    color: rgb(255, 223, 132);
+
+    border: 1px solid rgba(233, 178, 68, 0.65);
+    border-radius: 50%;
+
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+
+.accesibilidad-btn:hover {
+    background: rgba(233, 178, 68, 0.32);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.dropdown-accesibilidad {
+    position: absolute;
+    top: 100%;
+    right: 0;
+
+    min-width: 190px;
+    margin-top: 10px;
+    padding: 10px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    background: rgba(10, 14, 25, 0.96);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(10px);
+
+    z-index: 20000;
+}
+
+.dropdown-accesibilidad button {
+    width: 100%;
+    min-height: 38px;
+    padding: 8px 10px;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+
+    font: inherit;
+    cursor: pointer;
+    white-space: nowrap;
+
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.dropdown-accesibilidad button:hover {
+    background: rgba(37, 99, 235, 0.45);
+    border-color: rgba(255, 255, 255, 0.32);
+}
+
+body.texto-normal {
+    font-size: 16px;
+}
+
+body.texto-grande {
+    font-size: 18px;
+}
+
+body.texto-muy-grande {
+    font-size: 20px;
+}
+
+body.modo-alto-contraste {
+    --bg: rgba(0, 0, 0, 0.88);
+    --text: rgb(255, 255, 255);
+    --text-muted: rgb(235, 235, 235);
+    --primary: rgb(255, 221, 0);
+    --primary-dark: rgb(255, 221, 0);
+    --border: rgba(255, 255, 255, 0.8);
+
+    background-image: none;
+    background-color: black;
+}
+
+body.modo-alto-contraste a,
+body.modo-alto-contraste .login-btn {
+    color: rgb(255, 221, 0);
+}
+
+body.modo-alto-contraste .accesibilidad-btn {
+    background: rgb(255, 221, 0);
+    color: black;
+    border-color: white;
+}
+
+body.modo-alto-contraste .dropdown-accesibilidad,
+body.modo-alto-contraste .dropdown-usuario {
+    background: black;
+    border-color: white;
+}
+
+
+/* =========================
+   5. MAIN
+========================= */
+
+main {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 20px;
+
+    text-align: center;
+
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+
+    backdrop-filter: blur(12px);
+}
+
+section {
+    text-align: center;
+}
+
+
+/* =========================
+   6. HERO
+========================= */
+
+#hero {
+    margin-top: -30px;
+    margin-bottom: 40px;
+    padding: 20px;
+}
+
+
+/* =========================
+   7. HERRAMIENTAS
+========================= */
+
+#herramientas {
+    margin-top: 40px;
+    margin-bottom: 30px;
+    padding: 20px;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 50px;
+
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+
+    backdrop-filter: blur(12px);
+}
+
+#herramientas .contenedor:nth-child(4) {
+    grid-column: 2 / 3;
+}
+
+#herramientas .contenedor:nth-child(5) {
+    grid-column: 3 / 3;
+}
+
+.contenedor {
+    padding: 20px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background: rgba(37, 99, 235, 0.12);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+
+    color: var(--text);
+    font: inherit;
+    font-weight: bold;
+    text-decoration: none;
+
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.contenedor:hover {
+    transform: translateY(-8px) scale(1.05);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+}
+
+.texto_contenedor {
+    font-size: 1rem;
+    color: var(--text);
+}
+
+.contenedor:hover .texto_contenedor {
+    color: rgb(233, 178, 68);
+}
+
+.icono img {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+}
+
+
+/* =========================
+   8. BENEFICIOS
+========================= */
+
+#beneficios h2 {
+    margin-bottom: 20px;
+}
+
+#beneficios ul {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 100px;
+
+    list-style: none;
+}
+
+#beneficios li {
+    width: 100%;
+    padding: 30px 10px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+
+    backdrop-filter: blur(12px);
+}
+
+
+/* =========================
+   9. ADMINISTRACION
+========================= */
+
+.administracion-page {
+    min-height: 360px;
+}
+
+.administracion-panel h1 {
+    margin-bottom: 30px;
+}
+
+.administracion-opciones {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 25px;
+}
+
+.administracion-opcion {
+    min-height: 150px;
+    padding: 25px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+
+    background: rgba(37, 99, 235, 0.12);
+    color: var(--text);
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+
+    font: inherit;
+    text-align: center;
+    text-decoration: none;
+
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.administracion-opcion:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+}
+
+.administracion-opcion span {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: rgb(233, 178, 68);
+}
+
+.administracion-opcion small {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+.usuarios-admin-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.usuarios-admin-buscador {
+    width: min(100%, 360px);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.usuarios-admin-buscador label {
+    font-weight: bold;
+}
+
+.usuarios-admin-buscador input {
+    width: 100%;
+    padding: 12px;
+
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text);
+
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.usuarios-admin-lista {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.usuario-admin-card {
+    position: relative;
+    padding: 20px;
+    padding-bottom: 72px;
+
+    background: rgba(37, 99, 235, 0.12);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+
+    text-align: left;
+}
+
+.usuario-admin-card h2 {
+    margin-bottom: 12px;
+    color: rgb(233, 178, 68);
+}
+
+.usuario-admin-card p {
+    margin-bottom: 8px;
+}
+
+.usuario-admin-card button {
+    margin-top: 10px;
+    padding: 10px 14px;
+
+    background: var(--primary);
+    color: white;
+
+    border: none;
+    border-radius: 10px;
+
+    cursor: pointer;
+}
+
+.usuario-admin-card .eliminar-usuario-btn {
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    margin: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: rgba(220, 38, 38, 0.12);
+    color: #ff6b6b;
+
+    border: 1px solid rgba(255, 107, 107, 0.75);
+    border-radius: 10px;
+}
+
+.usuario-admin-card .eliminar-usuario-btn:hover {
+    background: rgba(220, 38, 38, 0.3);
+}
+
+.usuarios-admin-vacio {
+    grid-column: 1 / -1;
+    color: var(--text-muted);
+}
+
+
+/* =========================
+   10. FOOTER
+========================= */
+
+footer {
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 20px;
+
+    text-align: center;
+
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+
+    backdrop-filter: blur(12px);
+}
+
+footer .contacto-btn {
+    display: inline-block;
+    margin-top: 25px;
+}
