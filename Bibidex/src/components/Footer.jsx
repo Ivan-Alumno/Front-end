@@ -5,12 +5,11 @@ export default function Footer() {
     return (
         <footer id = "contacto">
 
-            <h2>Contacto</h2>
-
             <address>
-                <p>Email: Ivan.Villagra03@inacapmail.cl</p>
-                <p>Teléfono: +xxx xxxx xxxx</p>
-                <p>Dirección: Calle falsa 123, Ciudad, País</p>
+                <p>Alumno: Iván José Luis Vilalgra Letelier</p>
+                <p>Profesor: Víctor Armando Vásquez Muñoz</p>
+                <p>Asignatura: Programación Front End</p>
+                <p>Sección: 2026/O TI3031/D-FB50-N3-P13-C1/D La Granja FB5</p>
             </address>
 
             <Link className = "contacto-btn" to = "/contactar">¿Tienes dudas? Contactanos.</Link>
