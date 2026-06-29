@@ -423,7 +423,77 @@ section {
 ========================= */
 
 .administracion-page {
+    position: relative;
     min-height: 360px;
+}
+
+.admin-verificacion-overlay {
+    min-height: 360px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.admin-verificacion-modal {
+    width: min(100%, 440px);
+    padding: 25px;
+
+    background: rgba(10, 14, 25, 0.95);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+
+    text-align: left;
+}
+
+.admin-verificacion-modal h2 {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.admin-verificacion-modal p {
+    margin-bottom: 15px;
+    color: var(--text-muted);
+    text-align: center;
+}
+
+.admin-verificacion-modal label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.admin-verificacion-modal input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 12px;
+
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text);
+
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.admin-verificacion-modal button {
+    width: 100%;
+    padding: 12px;
+
+    background: var(--primary);
+    color: white;
+
+    border: none;
+    border-radius: 10px;
+
+    cursor: pointer;
+}
+
+.admin-verificacion-modal .admin-verificacion-mensaje {
+    min-height: 24px;
+    margin: 10px 0 0;
+
+    color: #ff6b6b;
 }
 
 .administracion-panel h1 {
@@ -574,6 +644,122 @@ section {
 .usuarios-admin-vacio {
     grid-column: 1 / -1;
     color: var(--text-muted);
+}
+
+.objetos-admin-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+
+    text-align: left;
+}
+
+.objetos-admin-panel h1,
+.objetos-admin-panel h2,
+.objetos-admin-panel h3 {
+    text-align: center;
+}
+
+.objeto-admin-form {
+    padding: 22px;
+
+    background: rgba(37, 99, 235, 0.12);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.objeto-admin-form label {
+    display: block;
+    margin: 12px 0 6px;
+
+    font-weight: bold;
+}
+
+.objeto-admin-form input,
+.objeto-admin-form select {
+    width: 100%;
+    padding: 12px;
+
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text);
+
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.objeto-admin-form select option {
+    background: #101827;
+    color: white;
+}
+
+.objeto-admin-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin: 10px 0 18px;
+}
+
+.objeto-admin-acciones,
+.objeto-card-acciones {
+    display: flex;
+    gap: 12px;
+    margin-top: 18px;
+}
+
+.objeto-admin-acciones button,
+.objeto-card-acciones button {
+    padding: 10px 14px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    background: var(--primary);
+    color: white;
+
+    border: none;
+    border-radius: 10px;
+
+    cursor: pointer;
+}
+
+.objeto-admin-mensaje {
+    min-height: 24px;
+    margin-top: 12px;
+    text-align: center;
+    color: rgb(233, 178, 68);
+}
+
+.objetos-admin-lista {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.objeto-admin-card {
+    padding: 20px;
+
+    background: rgba(37, 99, 235, 0.12);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.objeto-admin-card h2 {
+    margin-bottom: 10px;
+    color: rgb(233, 178, 68);
+}
+
+.objeto-admin-card ul {
+    margin: 8px 0 12px 20px;
+}
+
+.objeto-card-acciones .objeto-eliminar-btn {
+    background: rgba(220, 38, 38, 0.18);
+    color: #ff6b6b;
+    border: 1px solid rgba(255, 107, 107, 0.75);
 }
 
 

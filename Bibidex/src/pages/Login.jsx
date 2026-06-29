@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import { asegurarUsuarioAdministrador } from "../utils/adminUser";
 
 function obtenerContrasena(usuario) {
     return usuario.contrasena || usuario["contrase\u00f1a"] || "";
@@ -16,6 +17,7 @@ export default function Login() {
 
     function handleLogin(event) {
         event.preventDefault();
+        asegurarUsuarioAdministrador();
 
         const usuariosGuardados =
             JSON.parse(localStorage.getItem("usuarios")) || [];
@@ -35,6 +37,7 @@ export default function Login() {
 
         localStorage.setItem("usuarioLogueado", usuarioEncontrado.username);
         localStorage.setItem("correoLogueado", usuarioEncontrado.correo);
+        localStorage.setItem("rolLogueado", usuarioEncontrado.rol || "usuario");
         globalThis.dispatchEvent(new Event("usuarioActualizado"));
 
         setMensaje("Ingreso exitoso.");

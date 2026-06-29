@@ -151,7 +151,8 @@ export default function Register() {
             username: capitalizarUsername(usernameLimpio),
             correo: correoLimpio,
             contrasena: contrasena,
-            ["contrase\u00f1a"]: contrasena
+            ["contrase\u00f1a"]: contrasena,
+            rol: "usuario"
         });
 
         localStorage.setItem("usuarios", JSON.stringify(usuariosGuardados));

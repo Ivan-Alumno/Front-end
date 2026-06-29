@@ -1,11 +1,15 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Accessibility, Contrast, RotateCcw, Type } from "lucide-react";
 import logo from "../assets/Logo.png";
-import { useEffect, useState } from "react";
+import {
+    limpiarAdministracionVerificada,
+    usuarioTieneRolAdministrador
+} from "../utils/adminUser";
 
 export default function Header() {
-
     const [usuarioLogueado, setUsuarioLogueado] = useState("");
+    const [esAdministrador, setEsAdministrador] = useState(false);
     const [mostrarMenuUsuario, setMostrarMenuUsuario] = useState(false);
     const [mostrarMenuAccesibilidad, setMostrarMenuAccesibilidad] = useState(false);
     const [modoContraste, setModoContraste] = useState(false);
@@ -14,11 +18,12 @@ export default function Header() {
     useEffect(() => {
         function actualizarUsuario() {
             const usuario = localStorage.getItem("usuarioLogueado") || "";
+
             setUsuarioLogueado(usuario);
+            setEsAdministrador(usuarioTieneRolAdministrador());
         }
 
         actualizarUsuario();
-
         globalThis.addEventListener("usuarioActualizado", actualizarUsuario);
 
         return () => {
@@ -35,8 +40,11 @@ export default function Header() {
     function cerrarSesion() {
         localStorage.removeItem("usuarioLogueado");
         localStorage.removeItem("correoLogueado");
+        localStorage.removeItem("rolLogueado");
+        limpiarAdministracionVerificada();
 
         setUsuarioLogueado("");
+        setEsAdministrador(false);
         setMostrarMenuUsuario(false);
         setMostrarMenuAccesibilidad(false);
         setModoContraste(false);
@@ -65,27 +73,46 @@ export default function Header() {
 
     return (
         <header>
-
             <div className = "logo"><img src = {logo} alt = "Logo de la wiki"/></div>
 
             <nav>
-
                 <ul>
                     <li><Link to = "/">Inicio</Link></li>
                     <li><Link to = "/#beneficios">Beneficios</Link></li>
                     <li><Link to = "/#contacto">Contacto</Link></li>
-                    <li><Link to = "/administracion">Administración</Link></li>
-                    
+                    {esAdministrador && (
+                        <li>
+                            <Link
+                                to = "/administracion"
+                                onClick = {limpiarAdministracionVerificada}
+                            >
+                                Administracion
+                            </Link>
+                        </li>
+                    )}
+
                     <li className = "user-container">
-                      {usuarioLogueado ? (<div className = "usuario-menu"><button className = "login-btn" type = "button"
-                        onClick = {() => setMostrarMenuUsuario(!mostrarMenuUsuario)}>{usuarioLogueado}</button>
-                          
-                          {mostrarMenuUsuario && (<div className = "dropdown-usuario">
-                              <button onClick = {cerrarSesion}>Cerrar sesión</button></div>)}
-                        </div>
-                      ) : (
-                          <Link className = "login-btn" to = "/login">Iniciar sesión</Link>
-                      )}
+                        {usuarioLogueado ? (
+                            <div className = "usuario-menu">
+                                <button
+                                    className = "login-btn"
+                                    type = "button"
+                                    onClick = {() => setMostrarMenuUsuario(!mostrarMenuUsuario)}
+                                >
+                                    {usuarioLogueado}
+                                </button>
+
+                                {mostrarMenuUsuario && (
+                                    <div className = "dropdown-usuario">
+                                        <button type = "button" onClick = {cerrarSesion}>
+                                            Cerrar sesion
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        ) : (
+                            <Link className = "login-btn" to = "/login">Iniciar sesion</Link>
+                        )}
                     </li>
 
                     <li className = "accesibilidad-container">

@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { Trash2 } from "lucide-react";
+import { contrasenaAdministracionValida } from "../utils/adminUser";
 
 function obtenerContrasena(usuario) {
     return usuario.contrasena || usuario["contrase\u00f1a"] || "";
@@ -40,6 +41,15 @@ export default function AdministrationUsers() {
         );
 
         if (!confirmarEliminacion) {
+            return;
+        }
+
+        const contrasenaSistema = globalThis.prompt(
+            "Ingresa la contrasena de seguridad para eliminar este usuario."
+        );
+
+        if (!contrasenaAdministracionValida(contrasenaSistema || "")) {
+            globalThis.alert("Contrasena de seguridad incorrecta.");
             return;
         }
 
