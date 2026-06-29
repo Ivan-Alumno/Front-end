@@ -762,6 +762,115 @@ section {
     border: 1px solid rgba(255, 107, 107, 0.75);
 }
 
+.objetos-admin-buscador {
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.objetos-admin-buscador label {
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.objetos-admin-buscador input {
+    flex: 1;
+    min-width: 250px;
+    padding: 12px;
+
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text);
+
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.objeto-agregar-btn {
+    padding: 12px 18px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    background: var(--primary);
+    color: white;
+
+    border: none;
+    border-radius: 10px;
+
+    cursor: pointer;
+    white-space: nowrap;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+.objeto-agregar-btn:hover {
+    background: var(--primary-dark);
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10001;
+}
+
+.modal-contenido {
+    width: min(100%, 650px);
+    max-height: 85vh;
+    overflow-y: auto;
+
+    background: rgba(10, 14, 25, 0.95);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+
+    background: rgba(37, 99, 235, 0.12);
+    border-bottom: 1px solid var(--border);
+}
+
+.modal-header h2 {
+    margin: 0;
+    color: rgb(233, 178, 68);
+}
+
+.modal-cerrar-btn {
+    background: none;
+    border: none;
+    color: var(--text);
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s;
+}
+
+.modal-cerrar-btn:hover {
+    color: #ff6b6b;
+}
+
+.objetos-admin-vacio {
+    grid-column: 1 / -1;
+    color: var(--text-muted);
+}
+
 
 /* =========================
    10. FOOTER

@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Pencil, Save, Trash2, X } from "lucide-react";
+import { useMemo, useState } from "react";
+import { Pencil, Save, Trash2, X, Plus } from "lucide-react";
 import {
     actualizarObjeto,
     crearObjeto,
@@ -35,12 +35,12 @@ const FORMULARIO_INICIAL = {
 };
 
 const OPCIONES_PIEZA = [
-    "peinado",
-    "peinado adicional",
-    "superior",
-    "inferior",
-    "guantes",
-    "zapatos"
+    "Peinado",
+    "Peinado adicional",
+    "Superior",
+    "Inferior",
+    "Guantes",
+    "Zapatos"
 ];
 
 function agregarEfecto(lista, nombre, valor, unidad = "%") {
@@ -63,6 +63,31 @@ function agregarEfectoVida(lista, nombre, umbralVida, bonus) {
             valor: bonus,
             unidad: "%",
             condicion: `${umbralVida}% de vida`
+        }
+    ];
+}
+
+function agregarEfectoAtributosCombinados(lista, active, tenacity, strength, bravery) {
+    const valores = [
+        { nombre: "Active", valor: Number(active) },
+        { nombre: "Tenacity", valor: Number(tenacity) },
+        { nombre: "Strength", valor: Number(strength) },
+        { nombre: "Bravery", valor: Number(bravery) }
+    ].filter(item => item.valor > 0);
+
+    if (valores.length === 0) {
+        return lista;
+    }
+
+    const nombreValores = valores.map(item => item.nombre).join(" + ");
+    const valorTotal = valores.reduce((sum, item) => sum + item.valor, 0);
+
+    return [
+        ...lista,
+        {
+            nombre: `Daño de ${nombreValores}`,
+            valor: valorTotal,
+            unidad: "%"
         }
     ];
 }
@@ -99,10 +124,7 @@ function crearEfectosConjunto(formulario) {
     efectos = agregarEfectoVida(efectos, "Daño al enemigo bajo", formulario.enemigoBajo10, 10);
     efectos = agregarEfecto(efectos, "Daño continuo del daño hecho", formulario.danoContinuo);
     efectos = agregarEfecto(efectos, "Daño de habilidades", formulario.danoHabilidades);
-    efectos = agregarEfecto(efectos, "Daño de Active", formulario.danoActive);
-    efectos = agregarEfecto(efectos, "Daño de Tenacity", formulario.danoTenacity);
-    efectos = agregarEfecto(efectos, "Daño de Strength", formulario.danoStrength);
-    efectos = agregarEfecto(efectos, "Daño de Bravery", formulario.danoBravery);
+    efectos = agregarEfectoAtributosCombinados(efectos, formulario.danoActive, formulario.danoTenacity, formulario.danoStrength, formulario.danoBravery);
 
     return efectos;
 }
@@ -185,6 +207,23 @@ export default function AdministrationObjects() {
     const [formulario, setFormulario] = useState(FORMULARIO_INICIAL);
     const [objetoEditando, setObjetoEditando] = useState("");
     const [mensaje, setMensaje] = useState("");
+    const [busqueda, setBusqueda] = useState("");
+    const [modalAbierto, setModalAbierto] = useState(false);
+
+    const objetosFiltrados = useMemo(() => {
+        const textoBusqueda = busqueda.trim().toLowerCase();
+
+        if (!textoBusqueda) {
+            return objetos;
+        }
+
+        return objetos.filter((objeto) => {
+            const nombreConjunto = (objeto.nombreConjunto || "").toLowerCase();
+            const nombrePieza = (objeto.nombrePieza || "").toLowerCase();
+
+            return nombreConjunto.includes(textoBusqueda) || nombrePieza.includes(textoBusqueda);
+        });
+    }, [busqueda, objetos]);
 
     function actualizarCampo(campo, valor) {
         setFormulario((formularioActual) => ({
@@ -196,6 +235,17 @@ export default function AdministrationObjects() {
     function limpiarFormulario() {
         setFormulario(FORMULARIO_INICIAL);
         setObjetoEditando("");
+        setMensaje("");
+    }
+
+    function abrirModalNuevo() {
+        limpiarFormulario();
+        setModalAbierto(true);
+    }
+
+    function cerrarModal() {
+        setModalAbierto(false);
+        limpiarFormulario();
     }
 
     function guardarObjeto(event) {
@@ -217,13 +267,16 @@ export default function AdministrationObjects() {
         }
 
         setObjetos(obtenerObjetos());
-        limpiarFormulario();
+        setTimeout(() => {
+            cerrarModal();
+        }, 500);
     }
 
     function editarObjeto(objeto) {
         setFormulario(crearFormularioDesdeObjeto(objeto));
         setObjetoEditando(objeto.id);
         setMensaje("");
+        setModalAbierto(true);
     }
 
     function borrarObjeto(id) {
@@ -242,111 +295,145 @@ export default function AdministrationObjects() {
 
         eliminarObjeto(id);
         setObjetos(obtenerObjetos());
-        setMensaje("Objeto eliminado.");
     }
 
     return (
         <main className = "administracion-page">
             <section className = "objetos-admin-panel">
-                <h1>Administracion de objetos</h1>
-
-                <form className = "objeto-admin-form" onSubmit = {guardarObjeto}>
-                    <h2>{objetoEditando ? "Editar objeto" : "Agregar objeto"}</h2>
-
-                    <label htmlFor = "nombreConjunto">Nombre del conjunto</label>
+                <div className = "objetos-admin-buscador">
+                    <label htmlFor = "busquedaObjetos">Buscar objeto</label>
                     <input
-                        id = "nombreConjunto"
-                        value = {formulario.nombreConjunto}
-                        onChange = {(event) => actualizarCampo("nombreConjunto", event.target.value)}
-                        required
+                        id = "busquedaObjetos"
+                        type = "search"
+                        placeholder = "Nombre de conjunto o pieza"
+                        value = {busqueda}
+                        onChange = {(event) => setBusqueda(event.target.value)}
                     />
-
-                    <label htmlFor = "nombrePieza">Nombre de la pieza</label>
-                    <input
-                        id = "nombrePieza"
-                        value = {formulario.nombrePieza}
-                        onChange = {(event) => actualizarCampo("nombrePieza", event.target.value)}
-                        required
-                    />
-
-                    <label htmlFor = "pieza">Pieza</label>
-                    <select
-                        id = "pieza"
-                        value = {formulario.pieza}
-                        onChange = {(event) => actualizarCampo("pieza", event.target.value)}
+                    <button 
+                        type = "button" 
+                        className = "objeto-agregar-btn"
+                        onClick = {abrirModalNuevo}
                     >
-                        {OPCIONES_PIEZA.map((pieza) => (
-                            <option key = {pieza} value = {pieza}>{pieza}</option>
-                        ))}
-                    </select>
-
-                    <label htmlFor = "imagenObjeto">Imagen opcional URL/base64</label>
-                    <input
-                        id = "imagenObjeto"
-                        value = {formulario.imagen}
-                        onChange = {(event) => actualizarCampo("imagen", event.target.value)}
-                    />
-
-                    <h3>Estadisticas base</h3>
-                    <div className = "objeto-admin-grid">
-                        <input type = "number" placeholder = "Ataque fisico + n" value = {formulario.ataqueFisico} onChange = {(event) => actualizarCampo("ataqueFisico", event.target.value)}/>
-                        <input type = "number" placeholder = "Ataque magico + n" value = {formulario.ataqueMagico} onChange = {(event) => actualizarCampo("ataqueMagico", event.target.value)}/>
-                    </div>
-
-                    <h3>Efectos especiales de la pieza</h3>
-                    <div className = "objeto-admin-grid">
-                        <input type = "number" placeholder = "Critico + n%" value = {formulario.piezaCritico} onChange = {(event) => actualizarCampo("piezaCritico", event.target.value)}/>
-                        <input type = "number" placeholder = "Maximize + n%" value = {formulario.piezaMaximize} onChange = {(event) => actualizarCampo("piezaMaximize", event.target.value)}/>
-                    </div>
-
-                    <h3>Efectos del conjunto</h3>
-                    <div className = "objeto-admin-grid">
-                        <input type = "number" placeholder = "Critico + n%" value = {formulario.conjuntoCritico} onChange = {(event) => actualizarCampo("conjuntoCritico", event.target.value)}/>
-                        <input type = "number" placeholder = "Maximize + n%" value = {formulario.conjuntoMaximize} onChange = {(event) => actualizarCampo("conjuntoMaximize", event.target.value)}/>
-                        <input type = "number" placeholder = "Velocidad de ataque + n%" value = {formulario.velocidadAtaque} onChange = {(event) => actualizarCampo("velocidadAtaque", event.target.value)}/>
-                        <input type = "number" placeholder = "Adaptacion + n%" value = {formulario.adaptacion} onChange = {(event) => actualizarCampo("adaptacion", event.target.value)}/>
-                        <input type = "number" placeholder = "Polarizado + n%" value = {formulario.polarizado} onChange = {(event) => actualizarCampo("polarizado", event.target.value)}/>
-                        <input type = "number" placeholder = "Sobre n% vida +5%" value = {formulario.enemigoSobre5} onChange = {(event) => actualizarCampo("enemigoSobre5", event.target.value)}/>
-                        <input type = "number" placeholder = "Bajo n% vida +5%" value = {formulario.enemigoBajo5} onChange = {(event) => actualizarCampo("enemigoBajo5", event.target.value)}/>
-                        <input type = "number" placeholder = "Sobre n% vida +10%" value = {formulario.enemigoSobre10} onChange = {(event) => actualizarCampo("enemigoSobre10", event.target.value)}/>
-                        <input type = "number" placeholder = "Bajo n% vida +10%" value = {formulario.enemigoBajo10} onChange = {(event) => actualizarCampo("enemigoBajo10", event.target.value)}/>
-                        <input type = "number" placeholder = "Daño continuo + n%" value = {formulario.danoContinuo} onChange = {(event) => actualizarCampo("danoContinuo", event.target.value)}/>
-                        <input type = "number" placeholder = "Daño habilidades + n%" value = {formulario.danoHabilidades} onChange = {(event) => actualizarCampo("danoHabilidades", event.target.value)}/>
-                        <input type = "number" placeholder = "Daño Active + n%" value = {formulario.danoActive} onChange = {(event) => actualizarCampo("danoActive", event.target.value)}/>
-                        <input type = "number" placeholder = "Daño Tenacity + n%" value = {formulario.danoTenacity} onChange = {(event) => actualizarCampo("danoTenacity", event.target.value)}/>
-                        <input type = "number" placeholder = "Daño Strength + n%" value = {formulario.danoStrength} onChange = {(event) => actualizarCampo("danoStrength", event.target.value)}/>
-                        <input type = "number" placeholder = "Daño Bravery + n%" value = {formulario.danoBravery} onChange = {(event) => actualizarCampo("danoBravery", event.target.value)}/>
-                    </div>
-
-                    <div className = "objeto-admin-acciones">
-                        <button type = "submit"><Save size = {18}/> Guardar</button>
-                        <button type = "button" onClick = {limpiarFormulario}><X size = {18}/> Limpiar</button>
-                    </div>
-
-                    <p className = "objeto-admin-mensaje">{mensaje}</p>
-                </form>
+                        <Plus size = {20}/> Añadir
+                    </button>
+                </div>
 
                 <div className = "objetos-admin-lista">
-                    {objetos.map((objeto) => (
-                        <article className = "objeto-admin-card" key = {objeto.id}>
-                            <h2>{objeto.nombrePieza}</h2>
-                            <p><strong>Conjunto:</strong> {objeto.nombreConjunto}</p>
-                            <p><strong>Pieza:</strong> {objeto.pieza}</p>
-                            {renderEfectos("Estadisticas base", objeto.estadisticasBase)}
-                            {renderEfectos("Efectos especiales", objeto.efectosEspeciales)}
-                            {renderEfectos("Efectos de conjunto", objeto.efectosConjunto)}
+                    {objetosFiltrados.length > 0 ? (
+                        objetosFiltrados.map((objeto) => (
+                            <article className = "objeto-admin-card" key = {objeto.id}>
+                                <h2>{objeto.nombrePieza}</h2>
+                                <p><strong>Conjunto:</strong> {objeto.nombreConjunto}</p>
+                                <p><strong>Pieza:</strong> {objeto.pieza}</p>
+                                {renderEfectos("Estadisticas base:", objeto.estadisticasBase)}
+                                {renderEfectos("Efectos fijos:", objeto.efectosEspeciales)}
+                                {renderEfectos("Efectos de conjunto", objeto.efectosConjunto)}
 
-                            <div className = "objeto-card-acciones">
-                                <button type = "button" onClick = {() => editarObjeto(objeto)}>
-                                    <Pencil size = {18}/> Editar
-                                </button>
-                                <button className = "objeto-eliminar-btn" type = "button" onClick = {() => borrarObjeto(objeto.id)}>
-                                    <Trash2 size = {18}/> Eliminar
+                                <div className = "objeto-card-acciones">
+                                    <button type = "button" onClick = {() => editarObjeto(objeto)}>
+                                        <Pencil size = {18}/> Editar
+                                    </button>
+                                    <button className = "objeto-eliminar-btn" type = "button" onClick = {() => borrarObjeto(objeto.id)}>
+                                        <Trash2 size = {18}/> Eliminar
+                                    </button>
+                                </div>
+                            </article>
+                        ))
+                    ) : (
+                        <p className = "objetos-admin-vacio">No hay objetos para mostrar.</p>
+                    )}
+                </div>
+
+                {modalAbierto && (
+                    <div className = "modal-overlay" onClick = {cerrarModal}>
+                        <div className = "modal-contenido" onClick = {(e) => e.stopPropagation()}>
+                            <div className = "modal-header">
+                                <h2>{objetoEditando ? "Editar objeto" : "Agregar objeto"}</h2>
+                                <button 
+                                    type = "button" 
+                                    className = "modal-cerrar-btn"
+                                    onClick = {cerrarModal}
+                                >
+                                    <X size = {24}/>
                                 </button>
                             </div>
-                        </article>
-                    ))}
-                </div>
+
+                            <form className = "objeto-admin-form" onSubmit = {guardarObjeto}>
+                                <label htmlFor = "nombreConjunto">Nombre del conjunto</label>
+                                <input
+                                    id = "nombreConjunto"
+                                    value = {formulario.nombreConjunto}
+                                    onChange = {(event) => actualizarCampo("nombreConjunto", event.target.value)}
+                                    required
+                                />
+
+                                <label htmlFor = "nombrePieza">Nombre de la pieza</label>
+                                <input
+                                    id = "nombrePieza"
+                                    value = {formulario.nombrePieza}
+                                    onChange = {(event) => actualizarCampo("nombrePieza", event.target.value)}
+                                    required
+                                />
+
+                                <label htmlFor = "pieza">Pieza</label>
+                                <select
+                                    id = "pieza"
+                                    value = {formulario.pieza}
+                                    onChange = {(event) => actualizarCampo("pieza", event.target.value)}
+                                >
+                                    {OPCIONES_PIEZA.map((pieza) => (
+                                        <option key = {pieza} value = {pieza}>{pieza}</option>
+                                    ))}
+                                </select>
+
+                                <label htmlFor = "imagenObjeto">Imagen opcional URL/base64</label>
+                                <input
+                                    id = "imagenObjeto"
+                                    value = {formulario.imagen}
+                                    onChange = {(event) => actualizarCampo("imagen", event.target.value)}
+                                />
+
+                                <h3>Estadisticas base</h3>
+                                <div className = "objeto-admin-grid">
+                                    <input type = "number" placeholder = "Ataque fisico + n" value = {formulario.ataqueFisico} onChange = {(event) => actualizarCampo("ataqueFisico", event.target.value)}/>
+                                    <input type = "number" placeholder = "Ataque magico + n" value = {formulario.ataqueMagico} onChange = {(event) => actualizarCampo("ataqueMagico", event.target.value)}/>
+                                </div>
+
+                                <h3>Efectos especiales de la pieza</h3>
+                                <div className = "objeto-admin-grid">
+                                    <input type = "number" placeholder = "Critico + n%" value = {formulario.piezaCritico} onChange = {(event) => actualizarCampo("piezaCritico", event.target.value)}/>
+                                    <input type = "number" placeholder = "Maximize + n%" value = {formulario.piezaMaximize} onChange = {(event) => actualizarCampo("piezaMaximize", event.target.value)}/>
+                                </div>
+
+                                <h3>Efectos del conjunto</h3>
+                                <div className = "objeto-admin-grid">
+                                    <input type = "number" placeholder = "Critico + n%" value = {formulario.conjuntoCritico} onChange = {(event) => actualizarCampo("conjuntoCritico", event.target.value)}/>
+                                    <input type = "number" placeholder = "Maximize + n%" value = {formulario.conjuntoMaximize} onChange = {(event) => actualizarCampo("conjuntoMaximize", event.target.value)}/>
+                                    <input type = "number" placeholder = "Velocidad de ataque + n%" value = {formulario.velocidadAtaque} onChange = {(event) => actualizarCampo("velocidadAtaque", event.target.value)}/>
+                                    <input type = "number" placeholder = "Adaptacion + n%" value = {formulario.adaptacion} onChange = {(event) => actualizarCampo("adaptacion", event.target.value)}/>
+                                    <input type = "number" placeholder = "Polarizado + n%" value = {formulario.polarizado} onChange = {(event) => actualizarCampo("polarizado", event.target.value)}/>
+                                    <input type = "number" placeholder = "Sobre n% vida +5%" value = {formulario.enemigoSobre5} onChange = {(event) => actualizarCampo("enemigoSobre5", event.target.value)}/>
+                                    <input type = "number" placeholder = "Bajo n% vida +5%" value = {formulario.enemigoBajo5} onChange = {(event) => actualizarCampo("enemigoBajo5", event.target.value)}/>
+                                    <input type = "number" placeholder = "Sobre n% vida +10%" value = {formulario.enemigoSobre10} onChange = {(event) => actualizarCampo("enemigoSobre10", event.target.value)}/>
+                                    <input type = "number" placeholder = "Bajo n% vida +10%" value = {formulario.enemigoBajo10} onChange = {(event) => actualizarCampo("enemigoBajo10", event.target.value)}/>
+                                    <input type = "number" placeholder = "Daño continuo + n%" value = {formulario.danoContinuo} onChange = {(event) => actualizarCampo("danoContinuo", event.target.value)}/>
+                                    <input type = "number" placeholder = "Daño habilidades + n%" value = {formulario.danoHabilidades} onChange = {(event) => actualizarCampo("danoHabilidades", event.target.value)}/>
+                                    <input type = "number" placeholder = "Daño Active + n%" value = {formulario.danoActive} onChange = {(event) => actualizarCampo("danoActive", event.target.value)}/>
+                                    <input type = "number" placeholder = "Daño Tenacity + n%" value = {formulario.danoTenacity} onChange = {(event) => actualizarCampo("danoTenacity", event.target.value)}/>
+                                    <input type = "number" placeholder = "Daño Strength + n%" value = {formulario.danoStrength} onChange = {(event) => actualizarCampo("danoStrength", event.target.value)}/>
+                                    <input type = "number" placeholder = "Daño Bravery + n%" value = {formulario.danoBravery} onChange = {(event) => actualizarCampo("danoBravery", event.target.value)}/>
+                                </div>
+
+                                <div className = "objeto-admin-acciones">
+                                    <button type = "submit"><Save size = {18}/> Guardar</button>
+                                    <button type = "button" onClick = {cerrarModal}><X size = {18}/> Cancelar</button>
+                                </div>
+
+                                <p className = "objeto-admin-mensaje">{mensaje}</p>
+                            </form>
+                        </div>
+                    </div>
+                )}
             </section>
         </main>
     );
