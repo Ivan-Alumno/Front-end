@@ -222,7 +222,9 @@
     left: 0;
     width: 100%;
     height: 100%;
+    padding: 0;
     background: rgba(0, 0, 0, 0.75);
+    border: none;
     cursor: pointer;
 }
 
@@ -232,10 +234,12 @@
     width: min(700px, 100%);
     max-width: 700px;
     max-height: calc(100vh - 80px);
+    margin: 0;
     overflow-y: auto;
     box-sizing: border-box;
     padding: 24px;
     background: #0c1228;
+    color: var(--text);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     box-shadow: var(--shadow);

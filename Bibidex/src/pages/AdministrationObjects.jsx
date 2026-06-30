@@ -144,7 +144,7 @@ function crearFormularioDesdeObjeto(objeto) {
 }
 
 function renderEfectos(titulo, efectos) {
-    if (!efectos || !efectos.length) {
+    if (!efectos?.length) {
         return null;
     }
 
@@ -339,21 +339,16 @@ export default function AdministrationObjects() {
 
                 {modalAbierto && (
                     <div className = "modal-wrapper">
-                        <div
+                        <button
+                            type = "button"
                             className = "modal-overlay"
                             onClick = {cerrarModal}
-                            role = "button"
-                            tabIndex = {0}
                             aria-label = "Cerrar modal"
-                            onKeyDown = {(event) => {
-                                if (event.key === "Enter" || event.key === " ") {cerrarModal();}
-                            }}
                         />
                         
-                        <div 
+                        <dialog 
                             className = "modal-contenido" 
-                            role = "dialog" 
-                            aria-modal = "true"
+                            open
                         >
                             <div className = "modal-header">
                                 <h2>{objetoEditando ? "Editar objeto" : "Agregar objeto"}</h2>
@@ -448,7 +443,7 @@ export default function AdministrationObjects() {
 
                                 <p className = "objeto-admin-mensaje">{mensaje}</p>
                             </form>
-                        </div>
+                        </dialog>
                     </div>
                 )}
             </section>

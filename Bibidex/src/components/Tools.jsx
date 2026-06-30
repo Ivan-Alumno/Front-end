@@ -86,20 +86,14 @@ export default function Tools() {
 
     const modalEquipamiento = modalEquipamientoAbierto ? createPortal(
         <div className = "equipamiento-modal-wrapper">
-            <div
+            <button
+                type = "button"
                 className = "equipamiento-modal-overlay"
                 onClick = {cerrarModalEquipamiento}
-                role = "button"
-                tabIndex = {0}
                 aria-label = "Cerrar lista de equipamientos"
-                onKeyDown = {(event) => {
-                    if (event.key === "Enter" || event.key === " ") {
-                        cerrarModalEquipamiento();
-                    }
-                }}
             />
 
-            <div className = "equipamiento-modal" role = "dialog" aria-modal = "true">
+            <dialog className = "equipamiento-modal" open>
                 <div className = "equipamiento-modal-header">
                     <h2>Lista de equipamientos</h2>
                     <button type = "button" onClick = {cerrarModalEquipamiento} aria-label = "Cerrar">
@@ -153,24 +147,18 @@ export default function Tools() {
                         );
                     })}
                 </div>
-            </div>
+            </dialog>
 
             {objetoSeleccionado && (
                 <div className = "equipamiento-detalle-wrapper">
-                    <div
+                    <button
+                        type = "button"
                         className = "equipamiento-detalle-overlay"
                         onClick = {() => setObjetoSeleccionado(null)}
-                        role = "button"
-                        tabIndex = {0}
                         aria-label = "Cerrar detalle"
-                        onKeyDown = {(event) => {
-                            if (event.key === "Enter" || event.key === " ") {
-                                setObjetoSeleccionado(null);
-                            }
-                        }}
                     />
 
-                    <article className = "equipamiento-detalle" role = "dialog" aria-modal = "true">
+                    <dialog className = "equipamiento-detalle" open>
                         <div className = "equipamiento-detalle-header">
                             <h3>{objetoSeleccionado.nombrePieza}</h3>
                             <button type = "button" onClick = {() => setObjetoSeleccionado(null)} aria-label = "Cerrar detalle">
@@ -196,7 +184,7 @@ export default function Tools() {
                         {renderEfectos("Estadisticas base", objetoSeleccionado.estadisticasBase)}
                         {renderEfectos("Efectos fijos", objetoSeleccionado.efectosEspeciales)}
                         {renderEfectos("Efectos de conjunto", objetoSeleccionado.efectosConjunto)}
-                    </article>
+                    </dialog>
                 </div>
             )}
         </div>,
