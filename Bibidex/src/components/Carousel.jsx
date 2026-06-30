@@ -49,7 +49,7 @@ export default function Carousel() {
             <div className = "carrusel-container">
               
               <div className = "carrusel-slides" style = {{transform: `translateX(-${slideActual * 100}%)`}}>
-                {slides.map((slide, index) => (
+                {slides.map((slide) => (
                   <div className = "slide" key = {slide.titulo}>
                     <img src = {slide.imagen} alt = {slide.alt}/>
                     

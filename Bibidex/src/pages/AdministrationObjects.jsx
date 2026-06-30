@@ -193,6 +193,32 @@ export default function AdministrationObjects() {
         }));
     }
 
+    function cargarImagenLocal(event) {
+        const archivo = event.target.files?.[0];
+
+        if (!archivo) {
+            return;
+        }
+
+        if (!archivo.type.startsWith("image/")) {
+            setMensaje("Selecciona un archivo de imagen valido.");
+            return;
+        }
+
+        const lector = new FileReader();
+
+        lector.onload = () => {
+            actualizarCampo("imagen", lector.result || "");
+            setMensaje("Imagen cargada localmente.");
+        };
+
+        lector.onerror = () => {
+            setMensaje("No se pudo cargar la imagen.");
+        };
+
+        lector.readAsDataURL(archivo);
+    }
+
     function limpiarFormulario() {
         setFormulario(FORMULARIO_INICIAL);
         setObjetoEditando("");
@@ -373,7 +399,22 @@ export default function AdministrationObjects() {
                                     id = "imagenObjeto"
                                     value = {formulario.imagen}
                                     onChange = {(event) => actualizarCampo("imagen", event.target.value)}
+                                    placeholder = "Pega una URL o una imagen en base64"
                                 />
+
+                                <label htmlFor = "imagenObjetoArchivo">Subir imagen local</label>
+                                <input
+                                    id = "imagenObjetoArchivo"
+                                    type = "file"
+                                    accept = "image/*"
+                                    onChange = {cargarImagenLocal}
+                                />
+
+                                {formulario.imagen && (
+                                    <div className = "objeto-imagen-preview">
+                                        <img src = {formulario.imagen} alt = "Vista previa del objeto"/>
+                                    </div>
+                                )}
 
                                 <h3>Estadisticas base</h3>
                                 <div className = "objeto-admin-grid">
