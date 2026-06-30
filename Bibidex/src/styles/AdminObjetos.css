@@ -71,10 +71,9 @@
     cursor: pointer;
 }
 
-/* CORRECCIÓN: Separar los botones de las tarjetas al extremo izquierdo y derecho */
 .objeto-card-acciones {
     display: flex;
-    justify-content: space-between; /* Empuja Editar a la izquierda y Eliminar a la derecha */
+    justify-content: space-between;
     align-items: center;
     width: 100%;
     margin-top: 18px;
