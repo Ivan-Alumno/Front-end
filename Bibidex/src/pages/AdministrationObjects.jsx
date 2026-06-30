@@ -101,7 +101,7 @@ function crearEstadisticasBase(formulario) {
     return estadisticas;
 }
 
-function crearEfectosFijos(formulario) {
+function crearEfectosEspeciales(formulario) {
     let efectos = [];
 
     efectos = agregarEfecto(efectos, "Critico", formulario.piezaCritico);

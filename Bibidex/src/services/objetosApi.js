@@ -79,14 +79,33 @@ function guardarObjetos(objetos) {
 }
 
 export function asegurarObjetosIniciales() {
-    if (!localStorage.getItem(OBJETOS_STORAGE_KEY)) {
+    const datosGuardados = localStorage.getItem(OBJETOS_STORAGE_KEY);
+
+    if (!datosGuardados || datosGuardados === "null") {
+        guardarObjetos(OBJETOS_INICIALES);
+        return;
+    }
+
+    try {
+        const objetos = JSON.parse(datosGuardados);
+
+        if (!Array.isArray(objetos) || objetos.length === 0) {
+            guardarObjetos(OBJETOS_INICIALES);
+        }
+    } catch {
         guardarObjetos(OBJETOS_INICIALES);
     }
 }
 
 export function obtenerObjetos() {
     asegurarObjetosIniciales();
-    return JSON.parse(localStorage.getItem(OBJETOS_STORAGE_KEY)) || [];
+
+    try {
+        return JSON.parse(localStorage.getItem(OBJETOS_STORAGE_KEY)) || [];
+    } catch {
+        guardarObjetos(OBJETOS_INICIALES);
+        return OBJETOS_INICIALES;
+    }
 }
 
 export function crearObjeto(datosObjeto) {
