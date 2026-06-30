@@ -186,6 +186,7 @@
     right: 0;
     bottom: 0;
     z-index: 10001;
+
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -193,7 +194,7 @@
     height: 100%;
     padding: 40px 16px;
     box-sizing: border-box;
-    overflow: hidden;
+    overflow-y: auto;
 }
 
 .modal-overlay {
