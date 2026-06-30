@@ -1,0 +1,89 @@
+/*===================================*/
+header {
+    position: relative;
+    z-index: 10000;
+
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 10px 20px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+
+    backdrop-filter: blur(12px);
+    box-shadow: var(--shadow);
+}
+
+.logo img {
+    max-width: 150px;
+    height: auto;
+}
+
+nav ul {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    list-style: none;
+}
+
+nav a {
+    color: var(--text);
+    text-decoration: none;
+
+    transition: color 0.2s;
+}
+
+nav a:hover {
+    color: var(--primary);
+}
+/*===================================*/
+
+
+/*===================================*/
+main {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 20px;
+
+    text-align: center;
+
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+
+    backdrop-filter: blur(12px);
+}
+/*===================================*/
+
+
+/*===================================*/
+section {text-align: center;}
+/*===================================*/
+
+
+/*===================================*/
+footer {
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 20px;
+
+    text-align: center;
+
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+
+    backdrop-filter: blur(12px);
+}
+
+footer .contacto-btn {
+    display: inline-block;
+    margin-top: 25px;
+}
+/*===================================*/

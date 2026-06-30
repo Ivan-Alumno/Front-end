@@ -101,7 +101,7 @@ function crearEstadisticasBase(formulario) {
     return estadisticas;
 }
 
-function crearEfectosEspeciales(formulario) {
+function crearEfectosFijos(formulario) {
     let efectos = [];
 
     efectos = agregarEfecto(efectos, "Critico", formulario.piezaCritico);
@@ -300,22 +300,28 @@ export default function AdministrationObjects() {
     return (
         <main className = "administracion-page">
             <section className = "objetos-admin-panel">
+
                 <div className = "objetos-admin-buscador">
                     <label htmlFor = "busquedaObjetos">Buscar objeto</label>
-                    <input
-                        id = "busquedaObjetos"
-                        type = "search"
-                        placeholder = "Nombre de conjunto o pieza"
-                        value = {busqueda}
-                        onChange = {(event) => setBusqueda(event.target.value)}
-                    />
-                    <button 
-                        type = "button" 
-                        className = "objeto-agregar-btn"
-                        onClick = {abrirModalNuevo}
-                    >
+
+                    <div className="buscador-fila">
+                        <input
+                            id = "busquedaObjetos"
+                            type = "search"
+                            placeholder = "Nombre de conjunto o pieza"
+                            value = {busqueda}
+                            onChange = {(event) => setBusqueda(event.target.value)}
+                        />
+                        
+                        <button 
+                            type = "button" 
+                            className = "objeto-agregar-btn"
+                            onClick = {abrirModalNuevo}
+                        >
                         <Plus size = {20}/> Añadir
-                    </button>
+                        </button>
+                    
+                    </div>
                 </div>
 
                 <div className = "objetos-admin-lista">
@@ -399,7 +405,7 @@ export default function AdministrationObjects() {
                                     <input type = "number" placeholder = "Ataque magico + n" value = {formulario.ataqueMagico} onChange = {(event) => actualizarCampo("ataqueMagico", event.target.value)}/>
                                 </div>
 
-                                <h3>Efectos especiales de la pieza</h3>
+                                <h3>Efectos fijos</h3>
                                 <div className = "objeto-admin-grid">
                                     <input type = "number" placeholder = "Critico + n%" value = {formulario.piezaCritico} onChange = {(event) => actualizarCampo("piezaCritico", event.target.value)}/>
                                     <input type = "number" placeholder = "Maximize + n%" value = {formulario.piezaMaximize} onChange = {(event) => actualizarCampo("piezaMaximize", event.target.value)}/>

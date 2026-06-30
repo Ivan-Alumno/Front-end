@@ -1,0 +1,176 @@
+.login-btn {
+    background: transparent;
+    border: none;
+
+    color: rgb(31, 173, 217);
+    font: inherit;
+    text-decoration: none;
+
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.login-btn:hover {color: var(--primary);}
+
+.user-container {position: relative;}
+
+.usuario-menu {position: relative;}
+
+.dropdown-usuario {
+    position: absolute;
+    top: 100%;
+    right: 0;
+
+    min-width: 140px;
+    margin-top: 10px;
+    padding: 10px;
+
+    background: rgba(10, 14, 25, 0.95);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(10px);
+
+    z-index: 1000;
+}
+
+.dropdown-usuario button {
+    width: 100%;
+    padding: 8px;
+
+    background: rgb(220, 50, 50);
+    color: white;
+
+    border: none;
+    border-radius: 8px;
+
+    cursor: pointer;
+    white-space: nowrap;
+
+    transition: background 0.2s;
+}
+
+.dropdown-usuario button:hover {
+    background: rgb(170, 30, 30);
+}
+
+.accesibilidad-container {
+    position: relative;
+}
+
+.accesibilidad-btn {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(233, 178, 68, 0.18);
+    color: rgb(255, 223, 132);
+
+    border: 1px solid rgba(233, 178, 68, 0.65);
+    border-radius: 50%;
+
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+
+.accesibilidad-btn:hover {
+    background: rgba(233, 178, 68, 0.32);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.dropdown-accesibilidad {
+    position: absolute;
+    top: 100%;
+    right: 0;
+
+    min-width: 190px;
+    margin-top: 10px;
+    padding: 10px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    background: rgba(10, 14, 25, 0.96);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(10px);
+
+    z-index: 20000;
+}
+
+.dropdown-accesibilidad button {
+    width: 100%;
+    min-height: 38px;
+    padding: 8px 10px;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+
+    font: inherit;
+    cursor: pointer;
+    white-space: nowrap;
+
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.dropdown-accesibilidad button:hover {
+    background: rgba(37, 99, 235, 0.45);
+    border-color: rgba(255, 255, 255, 0.32);
+}
+
+body.texto-normal {
+    font-size: 16px;
+}
+
+body.texto-grande {
+    font-size: 18px;
+}
+
+body.texto-muy-grande {
+    font-size: 20px;
+}
+
+body.modo-alto-contraste {
+    --bg: rgba(0, 0, 0, 0.88);
+    --text: rgb(255, 255, 255);
+    --text-muted: rgb(235, 235, 235);
+    --primary: rgb(255, 221, 0);
+    --primary-dark: rgb(255, 221, 0);
+    --border: rgba(255, 255, 255, 0.8);
+
+    background-image: none;
+    background-color: black;
+}
+
+body.modo-alto-contraste a,
+body.modo-alto-contraste .login-btn {
+    color: rgb(255, 221, 0);
+}
+
+body.modo-alto-contraste .accesibilidad-btn {
+    background: rgb(255, 221, 0);
+    color: black;
+    border-color: white;
+}
+
+body.modo-alto-contraste .dropdown-accesibilidad,
+body.modo-alto-contraste .dropdown-usuario {
+    background: black;
+    border-color: white;
+}

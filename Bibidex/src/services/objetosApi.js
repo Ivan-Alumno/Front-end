@@ -1,5 +1,71 @@
 const OBJETOS_STORAGE_KEY = "objetosWiki";
 
+const OBJETOS_INICIALES = [
+    {
+        id: "veritas-persona-hair",
+        nombreConjunto: "Veritas Persona",
+        pieza: "peinado",
+        nombrePieza: "Veritas Persona Hair",
+        imagen: "",
+        estadisticasBase: [
+            { nombre: "Ataque fisico", valor: 50, unidad: "" },
+            { nombre: "Ataque magico", valor: 50, unidad: "" }
+        ],
+        efectosEspeciales: [
+            { nombre: "Critico", valor: 4, unidad: "%" }
+        ],
+        efectosConjunto: [
+            { nombre: "Critico", valor: 8, unidad: "%" },
+            { nombre: "Polarizado", valor: 5, unidad: "%" },
+            { nombre: "Daño continuo del daño hecho", valor: 5, unidad: "%" },
+            { nombre: "Daño al enemigo bajo", valor: 10, unidad: "%", condicion: "100% de vida" }
+        ]
+    },
+    {
+        id: "ballad-hwarang-hair",
+        nombreConjunto: "Ballad of Hwarang",
+        pieza: "peinado",
+        nombrePieza: "Ballad of Hwarang Hair",
+        imagen: "",
+        estadisticasBase: [
+            { nombre: "Ataque fisico", valor: 50, unidad: "" },
+            { nombre: "Ataque magico", valor: 50, unidad: "" }
+        ],
+        efectosEspeciales: [
+            { nombre: "Maximize", valor: 4, unidad: "%" }
+        ],
+        efectosConjunto: [
+            { nombre: "Critico", valor: 5, unidad: "%" },
+            { nombre: "Maximize", valor: 5, unidad: "%" },
+            { nombre: "Daño continuo del daño hecho", valor: 3, unidad: "%" },
+            { nombre: "Polarizado", valor: 2, unidad: "%" },
+            { nombre: "Daño al enemigo sobre", valor: 10, unidad: "%", condicion: "50% de vida" },
+            { nombre: "Daño al enemigo bajo", valor: 10, unidad: "%", condicion: "50% de vida" }
+        ]
+    },
+    {
+        id: "aries-aethra-hair",
+        nombreConjunto: "Aries Aethra",
+        pieza: "peinado",
+        nombrePieza: "Aries Aethra Hair",
+        imagen: "",
+        estadisticasBase: [
+            { nombre: "Ataque fisico", valor: 50, unidad: "" },
+            { nombre: "Ataque magico", valor: 50, unidad: "" }
+        ],
+        efectosEspeciales: [
+            { nombre: "Critico", valor: 2, unidad: "%" },
+            { nombre: "Maximize", valor: 2, unidad: "%" }
+        ],
+        efectosConjunto: [
+            { nombre: "Maximize", valor: 10, unidad: "%" },
+            { nombre: "Polarizado", valor: 2, unidad: "%" },
+            { nombre: "Daño continuo del daño hecho", valor: 3, unidad: "%" },
+            { nombre: "Daño al enemigo bajo", valor: 10, unidad: "%", condicion: "100% de vida" }
+        ]
+    }
+];
+
 function crearId() {
     if (globalThis.crypto?.randomUUID) {
         return globalThis.crypto.randomUUID();

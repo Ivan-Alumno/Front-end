@@ -17,10 +17,7 @@ import {
     usuarioTieneRolAdministrador
 } from "./utils/adminUser";
 
-import "./styles/Carrusel.css";
-import "./styles/Contacto.css";
-import "./styles/LandingPage.css";
-import "./styles/LoginRegistro.css";
+import "./styles/index.css";
 
 function renderRutaAdministracion(elemento) {
     if (!usuarioTieneRolAdministrador()) {

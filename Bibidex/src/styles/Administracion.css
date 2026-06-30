@@ -1,0 +1,62 @@
+@import "./AdminVerificacion.css";
+@import "./AdminUsuarios.css";
+@import "./AdminObjetos.css";
+
+/* =========================
+   ADMINISTRACION BASE
+========================= */
+
+.administracion-page {
+    position: relative;
+    min-height: 360px;
+}
+
+.administracion-panel h1 {
+    margin-bottom: 30px;
+}
+
+.administracion-opciones {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 25px;
+}
+
+.administracion-opcion {
+    min-height: 150px;
+    padding: 25px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+
+    background: rgba(37, 99, 235, 0.12);
+    color: var(--text);
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+
+    font: inherit;
+    text-align: center;
+    text-decoration: none;
+
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.administracion-opcion:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+}
+
+.administracion-opcion span {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: rgb(233, 178, 68);
+}
+
+.administracion-opcion small {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}

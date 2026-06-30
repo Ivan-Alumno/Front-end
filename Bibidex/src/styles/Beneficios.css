@@ -1,0 +1,30 @@
+#beneficios h2 {
+    margin-bottom: 20px;
+}
+
+#beneficios ul {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 100px;
+
+    list-style: none;
+}
+
+#beneficios li {
+    width: 100%;
+    padding: 30px 10px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+
+    backdrop-filter: blur(12px);
+}

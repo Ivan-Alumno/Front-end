@@ -1,0 +1,72 @@
+/* =========================
+   ADMINISTRACION VERIFICACION
+========================= */
+
+.admin-verificacion-overlay {
+    min-height: 360px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.admin-verificacion-modal {
+    width: min(100%, 440px);
+    padding: 25px;
+
+    background: rgba(10, 14, 25, 0.95);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+
+    text-align: left;
+}
+
+.admin-verificacion-modal h2 {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.admin-verificacion-modal p {
+    margin-bottom: 15px;
+    color: var(--text-muted);
+    text-align: center;
+}
+
+.admin-verificacion-modal label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.admin-verificacion-modal input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 12px;
+
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text);
+
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.admin-verificacion-modal button {
+    width: 100%;
+    padding: 12px;
+
+    background: var(--primary);
+    color: white;
+
+    border: none;
+    border-radius: 10px;
+
+    cursor: pointer;
+}
+
+.admin-verificacion-modal .admin-verificacion-mensaje {
+    min-height: 24px;
+    margin: 10px 0 0;
+
+    color: #ff6b6b;
+}

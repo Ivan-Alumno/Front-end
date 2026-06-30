@@ -1,0 +1,35 @@
+/*===================================*/
+:root {
+    --bg: rgba(255,255,255,.08);
+    --text: white;
+    --text-muted: rgba(255,255,255,.75);
+    --primary: rgb(37,99,235);
+    --primary-dark: rgb(20,60,160);
+    --primary-contrast: black;
+    --border: rgba(255,255,255,.18);
+    --radius:20px;
+    --shadow:0 10px 30px rgba(0,0,0,.25);
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+/*===================================*/
+
+
+/*===================================*/
+body {
+    font-family: 'Times New Roman', Times, serif;
+    line-height: 1.5;
+
+    background-color: #0b0f1a;
+    background-image: url("../assets/Fondo.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    color: var(--text);
+}
