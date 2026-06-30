@@ -1,12 +1,11 @@
-/* =========================
+/* ==========================================================================
    ADMINISTRACION DE OBJETOS
-========================= */
+   ========================================================================== */
 
 .objetos-admin-panel {
     display: flex;
     flex-direction: column;
     gap: 28px;
-
     text-align: left;
 }
 
@@ -18,7 +17,6 @@
 
 .objeto-admin-form {
     padding: 22px;
-
     background: rgba(37, 99, 235, 0.12);
     border: 1px solid var(--border);
     border-radius: var(--radius);
@@ -28,7 +26,6 @@
 .objeto-admin-form label {
     display: block;
     margin: 12px 0 6px;
-
     font-weight: bold;
 }
 
@@ -36,10 +33,8 @@
 .objeto-admin-form select {
     width: 100%;
     padding: 12px;
-
     background: rgba(255, 255, 255, 0.1);
     color: var(--text);
-
     border: 1px solid var(--border);
     border-radius: 10px;
 }
@@ -56,8 +51,7 @@
     margin: 10px 0 18px;
 }
 
-.objeto-admin-acciones,
-.objeto-card-acciones {
+.objeto-admin-acciones {
     display: flex;
     gap: 12px;
     margin-top: 18px;
@@ -66,19 +60,24 @@
 .objeto-admin-acciones button,
 .objeto-card-acciones button {
     padding: 10px 14px;
-
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-
     background: var(--primary);
     color: white;
-
     border: none;
     border-radius: 10px;
-
     cursor: pointer;
+}
+
+/* CORRECCIÓN: Separar los botones de las tarjetas al extremo izquierdo y derecho */
+.objeto-card-acciones {
+    display: flex;
+    justify-content: space-between; /* Empuja Editar a la izquierda y Eliminar a la derecha */
+    align-items: center;
+    width: 100%;
+    margin-top: 18px;
 }
 
 .objeto-admin-mensaje {
@@ -96,7 +95,6 @@
 
 .objeto-admin-card {
     padding: 20px;
-
     background: rgba(37, 99, 235, 0.12);
     border: 1px solid var(--border);
     border-radius: var(--radius);
@@ -113,6 +111,7 @@
 }
 
 .objeto-card-acciones .objeto-eliminar-btn {
+    display: flex;
     background: rgba(220, 38, 38, 0.18);
     color: #ff6b6b;
     border: 1px solid rgba(255, 107, 107, 0.75);
@@ -144,10 +143,8 @@
     flex: 0 0 auto;
     width: 400px;
     padding: 12px;
-
     background: rgba(255, 255, 255, 0.1);
     color: var(--text);
-
     border: 1px solid var(--border);
     border-radius: 10px;
     box-sizing: border-box;
@@ -157,18 +154,14 @@
     flex: 0 0 auto;
     flex-shrink: 0;
     padding: 12px 18px;
-
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-
     background: var(--primary);
     color: white;
-
     border: none;
     border-radius: 10px;
-
     cursor: pointer;
     white-space: nowrap;
     font-weight: 500;
@@ -182,4 +175,79 @@
 .objetos-admin-vacio {
     grid-column: 1 / -1;
     color: var(--text-muted);
+}
+
+/* ==========================================================================
+   ESTILOS DEL MODAL INTERNO (Ignorado visualmente para usuarios)
+   ========================================================================== */
+.modal-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10001;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    height: 100%;
+    padding: 40px 16px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.75);
+    cursor: pointer;
+}
+
+.modal-contenido {
+    position: relative;
+    z-index: 1;
+    width: min(700px, 100%);
+    max-width: 700px;
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+    box-sizing: border-box;
+    padding: 24px;
+    background: #0c1228;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: rgba(37, 99, 235, 0.12);
+    border-bottom: 1px solid var(--border);
+}
+
+.modal-header h2 {
+    margin: 0;
+    color: rgb(233, 178, 68);
+}
+
+.modal-cerrar-btn {
+    background: none;
+    border: none;
+    color: var(--text);
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s;
+}
+
+.modal-cerrar-btn:hover {
+    color: #ff6b6b;
 }

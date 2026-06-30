@@ -10,7 +10,7 @@ import { contrasenaAdministracionValida } from "../utils/adminUser";
 
 const FORMULARIO_INICIAL = {
     nombreConjunto: "",
-    pieza: "peinado",
+    pieza: "Peinado",
     nombrePieza: "",
     imagen: "",
     ataqueFisico: "",
@@ -19,19 +19,13 @@ const FORMULARIO_INICIAL = {
     piezaMaximize: "",
     conjuntoCritico: "",
     conjuntoMaximize: "",
-    velocidadAtaque: "",
     adaptacion: "",
     polarizado: "",
     enemigoSobre5: "",
     enemigoBajo5: "",
-    enemigoSobre10: "",
     enemigoBajo10: "",
     danoContinuo: "",
     danoHabilidades: "",
-    danoActive: "",
-    danoTenacity: "",
-    danoStrength: "",
-    danoBravery: ""
 };
 
 const OPCIONES_PIEZA = [
@@ -44,15 +38,15 @@ const OPCIONES_PIEZA = [
 ];
 
 function agregarEfecto(lista, nombre, valor, unidad = "%") {
-    if (valor === "") {
+    if (valor === "" || valor === undefined || valor === null) {
         return lista;
     }
 
     return [...lista, { nombre, valor: Number(valor), unidad }];
 }
 
-function agregarEfectoVida(lista, nombre, umbralVida, bonus) {
-    if (umbralVida === "") {
+function agregarEfectoVida(lista, nombre, valor) {
+    if (valor === "" || valor === undefined || valor === null) {
         return lista;
     }
 
@@ -60,37 +54,12 @@ function agregarEfectoVida(lista, nombre, umbralVida, bonus) {
         ...lista,
         {
             nombre,
-            valor: bonus,
-            unidad: "%",
-            condicion: `${umbralVida}% de vida`
-        }
-    ];
-}
-
-function agregarEfectoAtributosCombinados(lista, active, tenacity, strength, bravery) {
-    const valores = [
-        { nombre: "Active", valor: Number(active) },
-        { nombre: "Tenacity", valor: Number(tenacity) },
-        { nombre: "Strength", valor: Number(strength) },
-        { nombre: "Bravery", valor: Number(bravery) }
-    ].filter(item => item.valor > 0);
-
-    if (valores.length === 0) {
-        return lista;
-    }
-
-    const nombreValores = valores.map(item => item.nombre).join(" + ");
-    const valorTotal = valores.reduce((sum, item) => sum + item.valor, 0);
-
-    return [
-        ...lista,
-        {
-            nombre: `Daño de ${nombreValores}`,
-            valor: valorTotal,
+            valor: Number(valor),
             unidad: "%"
         }
     ];
 }
+
 
 function crearEstadisticasBase(formulario) {
     let estadisticas = [];
@@ -115,16 +84,14 @@ function crearEfectosConjunto(formulario) {
 
     efectos = agregarEfecto(efectos, "Critico", formulario.conjuntoCritico);
     efectos = agregarEfecto(efectos, "Maximize", formulario.conjuntoMaximize);
-    efectos = agregarEfecto(efectos, "Velocidad de ataque", formulario.velocidadAtaque);
     efectos = agregarEfecto(efectos, "Adaptacion", formulario.adaptacion);
     efectos = agregarEfecto(efectos, "Polarizado", formulario.polarizado);
-    efectos = agregarEfectoVida(efectos, "Daño al enemigo sobre", formulario.enemigoSobre5, 5);
-    efectos = agregarEfectoVida(efectos, "Daño al enemigo bajo", formulario.enemigoBajo5, 5);
-    efectos = agregarEfectoVida(efectos, "Daño al enemigo sobre", formulario.enemigoSobre10, 10);
-    efectos = agregarEfectoVida(efectos, "Daño al enemigo bajo", formulario.enemigoBajo10, 10);
+    efectos = agregarEfectoVida(efectos, "Daño al enemigo sobre 50% de PS:", formulario.enemigoSobre5);
+    efectos = agregarEfectoVida(efectos, "Daño al enemigo bajo 50% de PS:", formulario.enemigoBajo5);
+    efectos = agregarEfectoVida(efectos, "Daño al enemigo bajo 100% de PS:", formulario.enemigoBajo10);
+    
     efectos = agregarEfecto(efectos, "Daño continuo del daño hecho", formulario.danoContinuo);
     efectos = agregarEfecto(efectos, "Daño de habilidades", formulario.danoHabilidades);
-    efectos = agregarEfectoAtributosCombinados(efectos, formulario.danoActive, formulario.danoTenacity, formulario.danoStrength, formulario.danoBravery);
 
     return efectos;
 }
@@ -149,9 +116,9 @@ function obtenerValorEfecto(efectos, nombre) {
     return efectos.find((efecto) => efecto.nombre === nombre)?.valor || "";
 }
 
-function obtenerValorEfectoVida(efectos, nombre, bonus) {
-    const efecto = efectos.find((item) => item.nombre === nombre && item.valor === bonus);
-    return efecto?.condicion?.replace("% de vida", "") || "";
+function obtenerValorEfectoVida(efectos, nombre) {
+    const efecto = efectos.find((item) => item.nombre === nombre);
+    return efecto ? efecto.valor : "";
 }
 
 function crearFormularioDesdeObjeto(objeto) {
@@ -166,24 +133,18 @@ function crearFormularioDesdeObjeto(objeto) {
         piezaMaximize: obtenerValorEfecto(objeto.efectosEspeciales, "Maximize"),
         conjuntoCritico: obtenerValorEfecto(objeto.efectosConjunto, "Critico"),
         conjuntoMaximize: obtenerValorEfecto(objeto.efectosConjunto, "Maximize"),
-        velocidadAtaque: obtenerValorEfecto(objeto.efectosConjunto, "Velocidad de ataque"),
         adaptacion: obtenerValorEfecto(objeto.efectosConjunto, "Adaptacion"),
         polarizado: obtenerValorEfecto(objeto.efectosConjunto, "Polarizado"),
-        enemigoSobre5: obtenerValorEfectoVida(objeto.efectosConjunto, "Daño al enemigo sobre", 5),
-        enemigoBajo5: obtenerValorEfectoVida(objeto.efectosConjunto, "Daño al enemigo bajo", 5),
-        enemigoSobre10: obtenerValorEfectoVida(objeto.efectosConjunto, "Daño al enemigo sobre", 10),
-        enemigoBajo10: obtenerValorEfectoVida(objeto.efectosConjunto, "Daño al enemigo bajo", 10),
+        enemigoSobre5: obtenerValorEfectoVida(objeto.efectosConjunto, "Daño al enemigo sobre 50%:"),
+        enemigoBajo5: obtenerValorEfectoVida(objeto.efectosConjunto, "Daño al enemigo bajo 50%:"),
+        enemigoBajo10: obtenerValorEfectoVida(objeto.efectosConjunto, "Daño al enemigo bajo 100%:"),
         danoContinuo: obtenerValorEfecto(objeto.efectosConjunto, "Daño continuo del daño hecho"),
         danoHabilidades: obtenerValorEfecto(objeto.efectosConjunto, "Daño de habilidades"),
-        danoActive: obtenerValorEfecto(objeto.efectosConjunto, "Daño de Active"),
-        danoTenacity: obtenerValorEfecto(objeto.efectosConjunto, "Daño de Tenacity"),
-        danoStrength: obtenerValorEfecto(objeto.efectosConjunto, "Daño de Strength"),
-        danoBravery: obtenerValorEfecto(objeto.efectosConjunto, "Daño de Bravery")
     };
 }
 
 function renderEfectos(titulo, efectos) {
-    if (!efectos.length) {
+    if (!efectos || !efectos.length) {
         return null;
     }
 
@@ -351,8 +312,23 @@ export default function AdministrationObjects() {
                 </div>
 
                 {modalAbierto && (
-                    <div className = "modal-overlay" onClick = {cerrarModal}>
-                        <div className = "modal-contenido" onClick = {(e) => e.stopPropagation()}>
+                    <div className = "modal-wrapper">
+                        <div
+                            className = "modal-overlay"
+                            onClick = {cerrarModal}
+                            role = "button"
+                            tabIndex = {0}
+                            aria-label = "Cerrar modal"
+                            onKeyDown = {(event) => {
+                                if (event.key === "Enter" || event.key === " ") {cerrarModal();}
+                            }}
+                        />
+                        
+                        <div 
+                            className = "modal-contenido" 
+                            role = "dialog" 
+                            aria-modal = "true"
+                        >
                             <div className = "modal-header">
                                 <h2>{objetoEditando ? "Editar objeto" : "Agregar objeto"}</h2>
                                 <button 
@@ -415,19 +391,13 @@ export default function AdministrationObjects() {
                                 <div className = "objeto-admin-grid">
                                     <input type = "number" placeholder = "Critico + n%" value = {formulario.conjuntoCritico} onChange = {(event) => actualizarCampo("conjuntoCritico", event.target.value)}/>
                                     <input type = "number" placeholder = "Maximize + n%" value = {formulario.conjuntoMaximize} onChange = {(event) => actualizarCampo("conjuntoMaximize", event.target.value)}/>
-                                    <input type = "number" placeholder = "Velocidad de ataque + n%" value = {formulario.velocidadAtaque} onChange = {(event) => actualizarCampo("velocidadAtaque", event.target.value)}/>
                                     <input type = "number" placeholder = "Adaptacion + n%" value = {formulario.adaptacion} onChange = {(event) => actualizarCampo("adaptacion", event.target.value)}/>
                                     <input type = "number" placeholder = "Polarizado + n%" value = {formulario.polarizado} onChange = {(event) => actualizarCampo("polarizado", event.target.value)}/>
-                                    <input type = "number" placeholder = "Sobre n% vida +5%" value = {formulario.enemigoSobre5} onChange = {(event) => actualizarCampo("enemigoSobre5", event.target.value)}/>
-                                    <input type = "number" placeholder = "Bajo n% vida +5%" value = {formulario.enemigoBajo5} onChange = {(event) => actualizarCampo("enemigoBajo5", event.target.value)}/>
-                                    <input type = "number" placeholder = "Sobre n% vida +10%" value = {formulario.enemigoSobre10} onChange = {(event) => actualizarCampo("enemigoSobre10", event.target.value)}/>
-                                    <input type = "number" placeholder = "Bajo n% vida +10%" value = {formulario.enemigoBajo10} onChange = {(event) => actualizarCampo("enemigoBajo10", event.target.value)}/>
+                                    <input type = "number" placeholder = "Sobre 50% PS + n%" value = {formulario.enemigoSobre5} onChange = {(event) => actualizarCampo("enemigoSobre5", event.target.value)}/>
+                                    <input type = "number" placeholder = "Bajo 50% PS + n%" value = {formulario.enemigoBajo5} onChange = {(event) => actualizarCampo("enemigoBajo5", event.target.value)}/>
+                                    <input type = "number" placeholder = "Bajo 100% vida + n%" value = {formulario.enemigoBajo10} onChange = {(event) => actualizarCampo("enemigoBajo10", event.target.value)}/>
                                     <input type = "number" placeholder = "Daño continuo + n%" value = {formulario.danoContinuo} onChange = {(event) => actualizarCampo("danoContinuo", event.target.value)}/>
                                     <input type = "number" placeholder = "Daño habilidades + n%" value = {formulario.danoHabilidades} onChange = {(event) => actualizarCampo("danoHabilidades", event.target.value)}/>
-                                    <input type = "number" placeholder = "Daño Active + n%" value = {formulario.danoActive} onChange = {(event) => actualizarCampo("danoActive", event.target.value)}/>
-                                    <input type = "number" placeholder = "Daño Tenacity + n%" value = {formulario.danoTenacity} onChange = {(event) => actualizarCampo("danoTenacity", event.target.value)}/>
-                                    <input type = "number" placeholder = "Daño Strength + n%" value = {formulario.danoStrength} onChange = {(event) => actualizarCampo("danoStrength", event.target.value)}/>
-                                    <input type = "number" placeholder = "Daño Bravery + n%" value = {formulario.danoBravery} onChange = {(event) => actualizarCampo("danoBravery", event.target.value)}/>
                                 </div>
 
                                 <div className = "objeto-admin-acciones">

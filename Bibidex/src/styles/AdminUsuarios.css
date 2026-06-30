@@ -5,30 +5,42 @@
 .usuarios-admin-panel {
     display: flex;
     flex-direction: column;
-    gap: 25px;
+    gap: 28px;
+    text-align: left;
 }
 
 .usuarios-admin-buscador {
-    width: min(100%, 360px);
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
     align-items: flex-start;
+    width: min(100%, 1000px);
+    flex-direction: column;
     gap: 8px;
 }
 
 .usuarios-admin-buscador label {
     font-weight: bold;
+    white-space: nowrap;
+    text-align: left;
 }
 
-.usuarios-admin-buscador input {
+.buscador-fila {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
     width: 100%;
-    padding: 12px;
+}
 
+.buscador-fila input {
+    flex: 0 0 auto;
+    width: 400px;
+    padding: 12px;
     background: rgba(255, 255, 255, 0.1);
     color: var(--text);
-
     border: 1px solid var(--border);
     border-radius: 10px;
+    box-sizing: border-box;
 }
 
 .usuarios-admin-lista {
@@ -38,20 +50,16 @@
 }
 
 .usuario-admin-card {
-    position: relative;
     padding: 20px;
-    padding-bottom: 72px;
-
     background: rgba(37, 99, 235, 0.12);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
-
     text-align: left;
 }
 
 .usuario-admin-card h2 {
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     color: rgb(233, 178, 68);
 }
 
@@ -59,41 +67,34 @@
     margin-bottom: 8px;
 }
 
-.usuario-admin-card button {
-    margin-top: 10px;
-    padding: 10px 14px;
+.usuario-card-acciones {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 18px;
+}
 
+.usuario-card-acciones button {
+    padding: 10px 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     background: var(--primary);
     color: white;
-
     border: none;
     border-radius: 10px;
-
     cursor: pointer;
 }
 
-.usuario-admin-card .eliminar-usuario-btn {
-    position: absolute;
-    right: 16px;
-    bottom: 16px;
-
-    width: 42px;
-    height: 42px;
-    padding: 0;
-    margin: 0;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    background: rgba(220, 38, 38, 0.12);
+.usuario-card-acciones .eliminar-usuario-btn {
+    display: inline-flex;
+    background: rgba(220, 38, 38, 0.18);
     color: #ff6b6b;
-
     border: 1px solid rgba(255, 107, 107, 0.75);
-    border-radius: 10px;
 }
 
-.usuario-admin-card .eliminar-usuario-btn:hover {
+.usuario-card-acciones .eliminar-usuario-btn:hover {
     background: rgba(220, 38, 38, 0.3);
 }
 

@@ -64,13 +64,15 @@ export default function AdministrationUsers() {
             <section className = "usuarios-admin-panel">
                 <div className = "usuarios-admin-buscador">
                     <label htmlFor = "busquedaUsuarios">Buscar usuario</label>
-                    <input
-                        id = "busquedaUsuarios"
-                        type = "search"
-                        placeholder = "Nickname o correo"
-                        value = {busqueda}
-                        onChange = {(event) => setBusqueda(event.target.value)}
-                    />
+                    <div className="buscador-fila">
+                        <input
+                            id = "busquedaUsuarios"
+                            type = "search"
+                            placeholder = "Nickname o correo"
+                            value = {busqueda}
+                            onChange = {(event) => setBusqueda(event.target.value)}
+                        />
+                    </div>
                 </div>
 
                 <div className = "usuarios-admin-lista">
@@ -87,17 +89,22 @@ export default function AdministrationUsers() {
                                         <strong>Contrasena:</strong>{" "}
                                         {contrasenaVisible ? contrasena : "********"}
                                     </p>
-                                    <button type = "button" onClick = {() => alternarContrasena(usuario.correo)}>
-                                        {contrasenaVisible ? "Ocultar contrasena" : "Mostrar contrasena"}
-                                    </button>
-                                    <button
-                                        className = "eliminar-usuario-btn"
-                                        type = "button"
-                                        aria-label = {`Eliminar usuario ${usuario.username || usuario.correo}`}
-                                        onClick = {() => eliminarUsuario(usuario.correo)}
-                                    >
-                                        <Trash2 size = {20}/>
-                                    </button>
+                                    
+                                    {/* CORRECCIÓN AQUÍ: Agrupamos ambos botones en la misma fila de acciones como en objetos */}
+                                    <div className="usuario-card-acciones">
+                                        <button type = "button" onClick = {() => alternarContrasena(usuario.correo)}>
+                                            {contrasenaVisible ? "Ocultar contraseña" : "Mostrar contraseña"}
+                                        </button>
+
+                                        <button
+                                            className = "eliminar-usuario-btn"
+                                            type = "button"
+                                            aria-label = {`Eliminar usuario ${usuario.username || usuario.correo}`}
+                                            onClick = {() => eliminarUsuario(usuario.correo)}
+                                        >
+                                            <Trash2 size = {18}/> Eliminar
+                                        </button>
+                                    </div>
                                 </article>
                             );
                         })

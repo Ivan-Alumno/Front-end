@@ -4,7 +4,7 @@ const OBJETOS_INICIALES = [
     {
         id: "veritas-persona-hair",
         nombreConjunto: "Veritas Persona",
-        pieza: "peinado",
+        pieza: "Peinado",
         nombrePieza: "Veritas Persona Hair",
         imagen: "",
         estadisticasBase: [
@@ -24,7 +24,7 @@ const OBJETOS_INICIALES = [
     {
         id: "ballad-hwarang-hair",
         nombreConjunto: "Ballad of Hwarang",
-        pieza: "peinado",
+        pieza: "Peinado",
         nombrePieza: "Ballad of Hwarang Hair",
         imagen: "",
         estadisticasBase: [
@@ -46,7 +46,7 @@ const OBJETOS_INICIALES = [
     {
         id: "aries-aethra-hair",
         nombreConjunto: "Aries Aethra",
-        pieza: "peinado",
+        pieza: "Peinado",
         nombrePieza: "Aries Aethra Hair",
         imagen: "",
         estadisticasBase: [
