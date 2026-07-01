@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { Search, X } from "lucide-react";
 import logoMejoras from "../assets/Logo_mejoras.png";
@@ -6,7 +6,7 @@ import logoEstadisticas from "../assets/Logo_estadisticas.png";
 import logoTablaERP from "../assets/Logo_Tabla_ERP.png";
 import logoEquipamiento from "../assets/Logo_equipamiento.png";
 import logoCalentadores from "../assets/Logo_calentadores.png"
-import { obtenerObjetos } from "../services/objetosApi";
+import { obtenerObjetosAsync } from "../services/objetosApi";
 
 const CATEGORIAS_EQUIPAMIENTO = [
     { titulo: "Peinados", piezas: ["Peinado", "Peinado adicional"] },
@@ -54,8 +54,10 @@ function renderEfectos(titulo, efectos) {
 export default function Tools() {
     const [modalEquipamientoAbierto, setModalEquipamientoAbierto] = useState(false);
     const [busquedaEquipamiento, setBusquedaEquipamiento] = useState("");
-    const [objetos, setObjetos] = useState(() => obtenerObjetos());
+    const [objetos, setObjetos] = useState([]);
     const [objetoSeleccionado, setObjetoSeleccionado] = useState(null);
+    const [loadingObjetos, setLoadingObjetos] = useState(false);
+    const [objetosError, setObjetosError] = useState("");
 
     const objetosFiltrados = useMemo(() => {
         const busqueda = textoNormalizado(busquedaEquipamiento);
@@ -72,8 +74,36 @@ export default function Tools() {
         });
     }, [busquedaEquipamiento, objetos]);
 
-    function abrirModalEquipamiento() {
-        setObjetos(obtenerObjetos());
+    useEffect(() => {
+        async function cargarObjetos() {
+            setLoadingObjetos(true);
+            setObjetosError("");
+
+            try {
+                const datos = await obtenerObjetosAsync();
+                setObjetos(datos);
+            } catch (error) {
+                console.error("Error al cargar objetos en Tools:", error);
+                setObjetosError("No se pudo cargar el catálogo de equipamiento.");
+            } finally {
+                setLoadingObjetos(false);
+            }
+        }
+
+        cargarObjetos();
+
+        function manejarActualizacion() {
+            cargarObjetos();
+        }
+
+        globalThis.addEventListener("objetosActualizados", manejarActualizacion);
+
+        return () => {
+            globalThis.removeEventListener("objetosActualizados", manejarActualizacion);
+        };
+    }, []);
+
+    async function abrirModalEquipamiento() {
         setBusquedaEquipamiento("");
         setObjetoSeleccionado(null);
         setModalEquipamientoAbierto(true);
@@ -113,39 +143,45 @@ export default function Tools() {
                 </label>
 
                 <div className = "equipamiento-lista">
-                    {CATEGORIAS_EQUIPAMIENTO.map((categoria) => {
-                        const objetosCategoria = objetosFiltrados.filter((objeto) => (
-                            categoria.piezas.includes(objeto.pieza)
-                        ));
+                    {loadingObjetos ? (
+                        <p className = "equipamiento-cargando">Cargando equipamiento...</p>
+                    ) : objetosError ? (
+                        <p className = "equipamiento-error">{objetosError}</p>
+                    ) : (
+                        CATEGORIAS_EQUIPAMIENTO.map((categoria) => {
+                            const objetosCategoria = objetosFiltrados.filter((objeto) => (
+                                categoria.piezas.includes(objeto.pieza)
+                            ));
 
-                        return (
-                            <section className = "equipamiento-fila" key = {categoria.titulo}>
-                                <h3>{categoria.titulo}</h3>
+                            return (
+                                <section className = "equipamiento-fila" key = {categoria.titulo}>
+                                    <h3>{categoria.titulo}</h3>
 
-                                <div className = "equipamiento-items">
-                                    {objetosCategoria.length > 0 ? (
-                                        objetosCategoria.map((objeto) => (
-                                            <button
-                                                className = "equipamiento-item"
-                                                type = "button"
-                                                key = {objeto.id}
-                                                onClick = {() => setObjetoSeleccionado(objeto)}
-                                                title = {`${objeto.nombrePieza} - ${objeto.nombreConjunto}`}
-                                            >
-                                                {objeto.imagen ? (
-                                                    <img src = {objeto.imagen} alt = {objeto.nombrePieza}/>
-                                                ) : (
-                                                    <span>{obtenerIniciales(objeto)}</span>
-                                                )}
-                                            </button>
-                                        ))
-                                    ) : (
-                                        <p>No hay objetos en esta categoria.</p>
-                                    )}
-                                </div>
-                            </section>
-                        );
-                    })}
+                                    <div className = "equipamiento-items">
+                                        {objetosCategoria.length > 0 ? (
+                                            objetosCategoria.map((objeto) => (
+                                                <button
+                                                    className = "equipamiento-item"
+                                                    type = "button"
+                                                    key = {objeto.id}
+                                                    onClick = {() => setObjetoSeleccionado(objeto)}
+                                                    title = {`${objeto.nombrePieza} - ${objeto.nombreConjunto}`}
+                                                >
+                                                    {objeto.imagen ? (
+                                                        <img src = {objeto.imagen} alt = {objeto.nombrePieza}/>
+                                                    ) : (
+                                                        <span>{obtenerIniciales(objeto)}</span>
+                                                    )}
+                                                </button>
+                                            ))
+                                        ) : (
+                                            <p>No hay objetos en esta categoria.</p>
+                                        )}
+                                    </div>
+                                </section>
+                            );
+                        })
+                    )}
                 </div>
             </dialog>
 

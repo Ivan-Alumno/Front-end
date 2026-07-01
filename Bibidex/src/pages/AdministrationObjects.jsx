@@ -1,12 +1,14 @@
-import { useMemo, useState } from "react";
-import { Pencil, Save, Trash2, X, Plus } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { ArrowLeft, Pencil, Save, Trash2, X, Plus } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import {
     actualizarObjeto,
     crearObjeto,
     eliminarObjeto,
-    obtenerObjetos
+    obtenerObjetosAsync
 } from "../services/objetosApi";
 import { contrasenaAdministracionValida } from "../utils/adminUser";
+import { sanitizarTexto, validarUrl, validarNumero } from "../utils/formValidation";
 
 const FORMULARIO_INICIAL = {
     nombreConjunto: "",
@@ -97,19 +99,66 @@ function crearEfectosConjunto(formulario) {
 }
 
 function normalizarTexto(texto) {
-    return texto.trim();
+    return sanitizarTexto(texto || "");
 }
 
-function crearObjetoDesdeFormulario(formulario) {
+function sanitizarFormulario(formulario) {
     return {
         nombreConjunto: normalizarTexto(formulario.nombreConjunto),
         pieza: formulario.pieza,
         nombrePieza: normalizarTexto(formulario.nombrePieza),
-        imagen: normalizarTexto(formulario.imagen),
-        estadisticasBase: crearEstadisticasBase(formulario),
-        efectosEspeciales: crearEfectosEspeciales(formulario),
-        efectosConjunto: crearEfectosConjunto(formulario)
+        imagen: (formulario.imagen || "").trim(),
+        ataqueFisico: String(formulario.ataqueFisico || "").trim(),
+        ataqueMagico: String(formulario.ataqueMagico || "").trim(),
+        piezaCritico: String(formulario.piezaCritico || "").trim(),
+        piezaMaximize: String(formulario.piezaMaximize || "").trim(),
+        conjuntoCritico: String(formulario.conjuntoCritico || "").trim(),
+        conjuntoMaximize: String(formulario.conjuntoMaximize || "").trim(),
+        adaptacion: String(formulario.adaptacion || "").trim(),
+        polarizado: String(formulario.polarizado || "").trim(),
+        enemigoSobre5: String(formulario.enemigoSobre5 || "").trim(),
+        enemigoBajo5: String(formulario.enemigoBajo5 || "").trim(),
+        enemigoBajo10: String(formulario.enemigoBajo10 || "").trim(),
+        danoContinuo: String(formulario.danoContinuo || "").trim(),
+        danoHabilidades: String(formulario.danoHabilidades || "").trim()
     };
+}
+
+function validarFormulario(formulario) {
+    if (!formulario.nombreConjunto.trim() || !formulario.nombrePieza.trim()) {
+        return "El conjunto y el nombre de la pieza son obligatorios.";
+    }
+
+    if (!OPCIONES_PIEZA.includes(formulario.pieza)) {
+        return "Selecciona una pieza válida.";
+    }
+
+    if (formulario.imagen && !validarUrl(formulario.imagen.trim())) {
+        return "La URL de la imagen no es válida.";
+    }
+
+    const camposNumericos = [
+        "ataqueFisico",
+        "ataqueMagico",
+        "piezaCritico",
+        "piezaMaximize",
+        "conjuntoCritico",
+        "conjuntoMaximize",
+        "adaptacion",
+        "polarizado",
+        "enemigoSobre5",
+        "enemigoBajo5",
+        "enemigoBajo10",
+        "danoContinuo",
+        "danoHabilidades"
+    ];
+
+    const campoInvalido = camposNumericos.find((campo) => !validarNumero(formulario[campo]));
+    if (campoInvalido) {
+        return "Todos los valores numéricos deben ser números válidos o dejarse vacíos.";
+    }
+
+    return "";
 }
 
 function obtenerValorEfecto(efectos, nombre) {
@@ -123,9 +172,9 @@ function obtenerValorEfectoVida(efectos, nombre) {
 
 function crearFormularioDesdeObjeto(objeto) {
     return {
-        nombreConjunto: objeto.nombreConjunto,
-        pieza: objeto.pieza,
-        nombrePieza: objeto.nombrePieza,
+        nombreConjunto: normalizarTexto(objeto.nombreConjunto),
+        pieza: OPCIONES_PIEZA.includes(objeto.pieza) ? objeto.pieza : "Peinado",
+        nombrePieza: normalizarTexto(objeto.nombrePieza),
         imagen: objeto.imagen || "",
         ataqueFisico: obtenerValorEfecto(objeto.estadisticasBase, "Ataque fisico"),
         ataqueMagico: obtenerValorEfecto(objeto.estadisticasBase, "Ataque magico"),
@@ -140,6 +189,18 @@ function crearFormularioDesdeObjeto(objeto) {
         enemigoBajo10: obtenerValorEfectoVida(objeto.efectosConjunto, "Daño al enemigo bajo 100%:"),
         danoContinuo: obtenerValorEfecto(objeto.efectosConjunto, "Daño continuo del daño hecho"),
         danoHabilidades: obtenerValorEfecto(objeto.efectosConjunto, "Daño de habilidades"),
+    };
+}
+
+function crearObjetoDesdeFormulario(formulario) {
+    return {
+        nombreConjunto: formulario.nombreConjunto || "",
+        pieza: formulario.pieza || "Peinado",
+        nombrePieza: formulario.nombrePieza || "",
+        imagen: formulario.imagen || "",
+        estadisticasBase: crearEstadisticasBase(formulario),
+        efectosEspeciales: crearEfectosEspeciales(formulario),
+        efectosConjunto: crearEfectosConjunto(formulario)
     };
 }
 
@@ -164,12 +225,15 @@ function renderEfectos(titulo, efectos) {
 }
 
 export default function AdministrationObjects() {
-    const [objetos, setObjetos] = useState(() => obtenerObjetos());
+    const navigate = useNavigate();
+    const [objetos, setObjetos] = useState([]);
     const [formulario, setFormulario] = useState(FORMULARIO_INICIAL);
     const [objetoEditando, setObjetoEditando] = useState("");
     const [mensaje, setMensaje] = useState("");
     const [busqueda, setBusqueda] = useState("");
     const [modalAbierto, setModalAbierto] = useState(false);
+    const [loadingObjetos, setLoadingObjetos] = useState(false);
+    const [objetosError, setObjetosError] = useState("");
 
     const objetosFiltrados = useMemo(() => {
         const textoBusqueda = busqueda.trim().toLowerCase();
@@ -219,6 +283,25 @@ export default function AdministrationObjects() {
         lector.readAsDataURL(archivo);
     }
 
+    useEffect(() => {
+        async function cargarObjetos() {
+            setLoadingObjetos(true);
+            setObjetosError("");
+
+            try {
+                const datos = await obtenerObjetosAsync();
+                setObjetos(datos);
+            } catch (error) {
+                console.error("Error al cargar objetos en Administracion:", error);
+                setObjetosError("No se pudo cargar el catálogo de objetos.");
+            } finally {
+                setLoadingObjetos(false);
+            }
+        }
+
+        cargarObjetos();
+    }, []);
+
     function limpiarFormulario() {
         setFormulario(FORMULARIO_INICIAL);
         setObjetoEditando("");
@@ -235,28 +318,43 @@ export default function AdministrationObjects() {
         limpiarFormulario();
     }
 
-    function guardarObjeto(event) {
-        event.preventDefault();
+    async function guardarObjeto(event) {
+        if (event && event.preventDefault) event.preventDefault();
+        console.debug("guardarObjeto invoked", { objetoEditando, formulario });
 
-        const objeto = crearObjetoDesdeFormulario(formulario);
-
-        if (!objeto.nombreConjunto || !objeto.nombrePieza) {
-            setMensaje("El conjunto y el nombre de la pieza son obligatorios.");
+        const formularioLimpio = sanitizarFormulario(formulario);
+        const mensajeValidacion = validarFormulario(formularioLimpio);
+        if (mensajeValidacion) {
+            setMensaje(mensajeValidacion);
             return;
         }
 
-        if (objetoEditando) {
-            actualizarObjeto(objetoEditando, objeto);
-            setMensaje("Objeto actualizado.");
-        } else {
-            crearObjeto(objeto);
-            setMensaje("Objeto creado.");
-        }
+        const objeto = crearObjetoDesdeFormulario(formularioLimpio);
 
-        setObjetos(obtenerObjetos());
-        setTimeout(() => {
-            cerrarModal();
-        }, 500);
+        try {
+            const objetoGuardado = objetoEditando
+                ? await actualizarObjeto(objetoEditando, objeto)
+                : await crearObjeto(objeto);
+
+            setObjetos((objetosActuales) => {
+                if (objetoEditando) {
+                    return objetosActuales.map((item) =>
+                        item.id === objetoEditando ? objetoGuardado : item
+                    );
+                }
+
+                return [...objetosActuales, objetoGuardado];
+            });
+
+            setMensaje(objetoEditando ? "Objeto actualizado." : "Objeto creado.");
+            console.debug("guardarObjeto success", { objetoGuardado });
+            setTimeout(() => {
+                cerrarModal();
+            }, 500);
+        } catch (error) {
+            console.error("Error al guardar objeto:", error);
+            setMensaje("No se pudo guardar el objeto. Intenta de nuevo.");
+        }
     }
 
     function editarObjeto(objeto) {
@@ -266,7 +364,7 @@ export default function AdministrationObjects() {
         setModalAbierto(true);
     }
 
-    function borrarObjeto(id) {
+    async function borrarObjeto(id) {
         const confirmarEliminacion = globalThis.confirm("Seguro que quieres eliminar este objeto?");
 
         if (!confirmarEliminacion) {
@@ -280,8 +378,14 @@ export default function AdministrationObjects() {
             return;
         }
 
-        eliminarObjeto(id);
-        setObjetos(obtenerObjetos());
+        try {
+            await eliminarObjeto(id);
+            const datos = await obtenerObjetosAsync();
+            setObjetos(datos);
+        } catch (error) {
+            console.error("Error al eliminar objeto:", error);
+            globalThis.alert("No se pudo eliminar el objeto. Intenta de nuevo.");
+        }
     }
 
     return (
@@ -289,6 +393,14 @@ export default function AdministrationObjects() {
             <section className = "objetos-admin-panel">
 
                 <div className = "objetos-admin-buscador">
+                    <button
+                        type = "button"
+                        className = "volver-administracion-btn"
+                        onClick = {() => navigate("/administracion")}
+                    >
+                        <ArrowLeft size = {18}/> Volver a administración
+                    </button>
+
                     <label htmlFor = "busquedaObjetos">Buscar objeto</label>
 
                     <div className="buscador-fila">
@@ -305,9 +417,8 @@ export default function AdministrationObjects() {
                             className = "objeto-agregar-btn"
                             onClick = {abrirModalNuevo}
                         >
-                        <Plus size = {20}/> Añadir
+                            <Plus size = {20}/> Añadir
                         </button>
-                    
                     </div>
                 </div>
 
@@ -437,7 +548,7 @@ export default function AdministrationObjects() {
                                 </div>
 
                                 <div className = "objeto-admin-acciones">
-                                    <button type = "submit"><Save size = {18}/> Guardar</button>
+                                    <button type = "button" onClick = {guardarObjeto}><Save size = {18}/> Guardar</button>
                                     <button type = "button" onClick = {cerrarModal}><X size = {18}/> Cancelar</button>
                                 </div>
 

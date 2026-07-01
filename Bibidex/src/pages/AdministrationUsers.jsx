@@ -1,12 +1,14 @@
-import { useMemo, useState } from "react";
-import { Trash2 } from "lucide-react";
-import { contrasenaAdministracionValida } from "../utils/adminUser";
+import { useEffect, useMemo, useState } from "react";
+import { ArrowLeft, Trash2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { ADMIN_USER, contrasenaAdministracionValida } from "../utils/adminUser";
 
 function obtenerContrasena(usuario) {
     return usuario.contrasena || usuario["contrase\u00f1a"] || "";
 }
 
 export default function AdministrationUsers() {
+    const navigate = useNavigate();
     const [busqueda, setBusqueda] = useState("");
     const [usuarios, setUsuarios] = useState(() => {
         return JSON.parse(localStorage.getItem("usuarios")) || [];
@@ -35,6 +37,10 @@ export default function AdministrationUsers() {
         }));
     }
 
+    useEffect(() => {
+        localStorage.setItem("usuarios", JSON.stringify(usuarios));
+    }, [usuarios]);
+
     function eliminarUsuario(correoUsuario) {
         const confirmarEliminacion = globalThis.confirm(
             "Seguro que quieres eliminar este usuario? Esta accion no se puede deshacer."
@@ -48,6 +54,11 @@ export default function AdministrationUsers() {
             "Ingresa la contrasena de seguridad para eliminar este usuario."
         );
 
+        if (correoUsuario.toLowerCase() === ADMIN_USER.correo.toLowerCase()) {
+            globalThis.alert("No se puede eliminar al usuario administrador.");
+            return;
+        }
+
         if (!contrasenaAdministracionValida(contrasenaSistema || "")) {
             globalThis.alert("Contrasena de seguridad incorrecta.");
             return;
@@ -56,13 +67,20 @@ export default function AdministrationUsers() {
         const usuariosActualizados = usuarios.filter((usuario) => usuario.correo !== correoUsuario);
 
         setUsuarios(usuariosActualizados);
-        localStorage.setItem("usuarios", JSON.stringify(usuariosActualizados));
     }
 
     return (
         <main className = "administracion-page">
             <section className = "usuarios-admin-panel">
                 <div className = "usuarios-admin-buscador">
+                    <button
+                        type = "button"
+                        className = "volver-administracion-btn"
+                        onClick = {() => navigate("/administracion")}
+                    >
+                        <ArrowLeft size = {18}/> Volver a administración
+                    </button>
+
                     <label htmlFor = "busquedaUsuarios">Buscar usuario</label>
                     <div className="buscador-fila">
                         <input

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { asegurarUsuarioAdministrador } from "../utils/adminUser";
+import { sanitizarTexto, validarCorreo } from "../utils/formValidation";
 
 function obtenerContrasena(usuario) {
     return usuario.contrasena || usuario["contrase\u00f1a"] || "";
@@ -21,11 +22,16 @@ export default function Login() {
 
         const usuariosGuardados =
             JSON.parse(localStorage.getItem("usuarios")) || [];
-        const correoLimpio = correo.trim();
+        const correoLimpio = sanitizarTexto(correo.trim().toLowerCase());
+
+        if (!validarCorreo(correoLimpio)) {
+            setMensaje("Ingrese un correo valido.");
+            return;
+        }
 
         const usuarioEncontrado = usuariosGuardados.find((usuario) => {
             return (
-                usuario.correo === correoLimpio &&
+                usuario.correo?.toLowerCase() === correoLimpio &&
                 obtenerContrasena(usuario) === contrasena
             );
         });

@@ -1,11 +1,7 @@
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-
-function validarCorreo(correo) {
-    const correoRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$/;
-    return correoRegex.test(correo);
-}
+import { sanitizarTexto, validarCorreo } from "../utils/formValidation";
 
 function obtenerValidacionesUsuario(username) {
     return [
@@ -122,8 +118,8 @@ export default function Register() {
     const [mostrarValidacionUsuario, setMostrarValidacionUsuario] = useState(false);
     const [mostrarValidacionContrasena, setMostrarValidacionContrasena] = useState(false);
 
-    const usernameLimpio = username.trim();
-    const correoLimpio = correo.trim();
+    const usernameLimpio = sanitizarTexto(username.trim());
+    const correoLimpio = sanitizarTexto(correo.trim().toLowerCase());
     const usernameValidaciones = obtenerValidacionesUsuario(usernameLimpio);
     const contrasenaValidaciones = obtenerValidacionesContrasena(contrasena);
     const usernameValido = todasCumplidas(usernameValidaciones);

@@ -44,7 +44,6 @@ export default function Header() {
         limpiarAdministracionVerificada();
 
         setUsuarioLogueado("");
-        setEsAdministrador(false);
         setMostrarMenuUsuario(false);
         setMostrarMenuAccesibilidad(false);
         setModoContraste(false);
@@ -82,12 +81,7 @@ export default function Header() {
                     <li><Link to = "/#contacto">Contacto</Link></li>
                     {esAdministrador && (
                         <li>
-                            <Link
-                                to = "/administracion"
-                                onClick = {limpiarAdministracionVerificada}
-                            >
-                                Administracion
-                            </Link>
+                            <Link to = "/administracion">Administracion</Link>
                         </li>
                     )}
 

@@ -1,5 +1,5 @@
 import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -19,8 +19,8 @@ import {
 
 import "./styles/index.css";
 
-function renderRutaAdministracion(elemento) {
-    if (!usuarioTieneRolAdministrador()) {
+function renderRutaAdministracion(elemento, esAdministrador) {
+    if (!esAdministrador) {
         return <Navigate to = "/login" replace/>;
     }
 
@@ -28,8 +28,20 @@ function renderRutaAdministracion(elemento) {
 }
 
 export default function App() {
+    const [esAdministrador, setEsAdministrador] = useState(usuarioTieneRolAdministrador());
+
     useEffect(() => {
         asegurarUsuarioAdministrador();
+
+        function manejarUsuarioActualizado() {
+            setEsAdministrador(usuarioTieneRolAdministrador());
+        }
+
+        globalThis.addEventListener("usuarioActualizado", manejarUsuarioActualizado);
+
+        return () => {
+            globalThis.removeEventListener("usuarioActualizado", manejarUsuarioActualizado);
+        };
     }, []);
 
     return (
@@ -45,15 +57,15 @@ export default function App() {
                 <Route path = "/contactar" element = {<Contact/>}/>
                 <Route
                     path = "/administracion"
-                    element = {renderRutaAdministracion(<Administration/>)}
+                    element = {renderRutaAdministracion(<Administration/>, esAdministrador)}
                 />
                 <Route
                     path = "/administracion/usuarios"
-                    element = {renderRutaAdministracion(<AdministrationUsers/>)}
+                    element = {renderRutaAdministracion(<AdministrationUsers/>, esAdministrador)}
                 />
                 <Route
                     path = "/administracion/objetos"
-                    element = {renderRutaAdministracion(<AdministrationObjects/>)}
+                    element = {renderRutaAdministracion(<AdministrationObjects/>, esAdministrador)}
                 />
             </Routes>
 
